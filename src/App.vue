@@ -1,5 +1,7 @@
 <template>
-  <el-button type="success">测试用按钮</el-button>
+  <!-- <el-button type="success">测试用按钮</el-button> -->
+  <!-- 路由出口 -->
+  <router-view></router-view>
 </template>
 
 <script>

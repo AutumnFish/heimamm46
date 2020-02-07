@@ -4,10 +4,20 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 // 注册一下 use
 Vue.use(VueRouter)
+
+// 导入 组件 login
+import login from '../views/login/login.vue'
+
 // 创建路由对象
 const router = new VueRouter({
     // 路由规则
-    routes:[]
+    routes:[
+        // 登录
+        {
+            path:"/login",
+            component:login
+        }
+    ]
 })
 // 暴露出去
 export default router
