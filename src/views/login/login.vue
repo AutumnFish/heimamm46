@@ -34,7 +34,12 @@
         </el-form-item>
         <!-- 用户协议 -->
         <el-form-item>
-          <el-checkbox v-model="loginForm.isChecked">是否同意用户协议</el-checkbox>
+          <el-checkbox v-model="loginForm.isChecked">
+            我已阅读并同意
+            <el-link type="primary">用户协议</el-link>
+            和
+            <el-link type="primary">隐私条款</el-link>
+          </el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-button type="primary">立即创建</el-button>
@@ -116,5 +121,14 @@ export default {
       height: 40.8px;
     }
   }
+  // 协议区域的布局
+  .el-checkbox{
+    display: flex;
+    .el-checkbox__label{
+      display: flex;
+    }
+  }
 }
+
+
 </style>
