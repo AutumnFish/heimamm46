@@ -42,8 +42,8 @@
           </el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">立即创建</el-button>
-          <el-button>取消</el-button>
+          <el-button class="my-btn" type="primary">登录</el-button>
+          <el-button class="my-btn" type="primary">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -83,7 +83,6 @@ export default {
   align-items: center;
   /* 左右均分 */
   justify-content: space-around;
-
   // 左侧盒子
   .left-box {
     width: 478px;
@@ -120,15 +119,21 @@ export default {
       width: 100%;
       height: 40.8px;
     }
+    // 底部的按钮
+    .my-btn {
+      width: 100%;
+      margin-top: 26px;
+      margin-left: 0;
+    }
   }
   // 协议区域的布局
-  .el-checkbox{
+  .el-checkbox {
     display: flex;
-    .el-checkbox__label{
+    // 上下居中
+    align-items: center;
+    .el-checkbox__label {
       display: flex;
     }
   }
 }
-
-
 </style>
