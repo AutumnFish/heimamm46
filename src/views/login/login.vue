@@ -11,17 +11,17 @@
         <span class="sub-title">用户登录</span>
       </div>
       <!-- 表单 -->
-      <el-form ref="form" :model="loginForm" label-width="43px">
+      <el-form ref="loginForm" :rules="rules" :model="loginForm" label-width="43px">
         <!-- 手机号 -->
         <el-form-item>
           <el-input prefix-icon="el-icon-user" placeholder="请输入手机号" v-model="loginForm.phone"></el-input>
         </el-form-item>
         <!-- 密码 -->
-        <el-form-item>
+        <el-form-item prop="password">
           <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" v-model="loginForm.password"></el-input>
         </el-form-item>
         <!-- 验证码 -->
-        <el-form-item>
+        <el-form-item prop="loginCode">
           <el-row>
             <el-col :span="17">
               <el-input prefix-icon="el-icon-key" placeholder="请输入验证码" v-model="loginForm.loginCode"></el-input>
@@ -42,7 +42,7 @@
           </el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button class="my-btn" type="primary">登录</el-button>
+          <el-button class="my-btn" @click="submitForm('loginForm')" type="primary">登录</el-button>
           <el-button class="my-btn" type="primary">注册</el-button>
         </el-form-item>
       </el-form>
@@ -67,8 +67,40 @@ export default {
         loginCode: '',
         // 是否勾选
         isChecked: false
+      },
+      // 校验规则
+      rules: {
+        password: [
+          { required: true, message: '密码不能为空', trigger: 'blur' },
+          { min: 6, max: 12, message: '密码的长度为6-12位', trigger: 'blur' }
+        ],
+        loginCode: [
+          { required: true, message: '验证码不能为空', trigger: 'blur' },
+          { min: 4, max: 4, message: '验证码的长度为4位', trigger: 'blur' }
+        ]
       }
     };
+  },
+  // 方法
+  methods: {
+    // 提交表单
+    submitForm(formName) {
+      // 上面传入的 formName是 ruleForm
+      // $refs作用是 获取 页面中使用ref标记的元素
+      // 等同于 this.$refs['loginForm'] 相当于获取到了Element-ui的表单
+      // this.$refs['loginForm'] 等同于 this.$refs.loginForm
+      // validate这个方法是Element-ui的表单的方法
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$message.success('验证成功');
+          // 验证正确
+        } else {
+          this.$message.error('验证失败');
+          // 验证错误
+          return false;
+        }
+      });
+    }
   }
 };
 </script>
