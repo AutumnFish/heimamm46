@@ -26,7 +26,7 @@
             <el-col :span="17">
               <el-input prefix-icon="el-icon-key" placeholder="请输入验证码" v-model="loginForm.loginCode"></el-input>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="7" class='code-col'>
               <!-- 登录验证码 -->
               <img class="login-code" src="../../assets/login_captcha.png" alt="" />
             </el-col>
@@ -85,8 +85,6 @@ export default {
   methods: {
     // 提交表单
     submitForm(formName) {
-      // 上面传入的 formName是 ruleForm
-      // $refs作用是 获取 页面中使用ref标记的元素
       // 等同于 this.$refs['loginForm'] 相当于获取到了Element-ui的表单
       // this.$refs['loginForm'] 等同于 this.$refs.loginForm
       // validate这个方法是Element-ui的表单的方法
@@ -156,6 +154,10 @@ export default {
       width: 100%;
       margin-top: 26px;
       margin-left: 0;
+    }
+    // 验证码的 栅格容器
+    .code-col{
+      height: 40.8px;
     }
   }
   // 协议区域的布局
