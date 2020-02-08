@@ -37,7 +37,7 @@ export default {
   align-items: center;
   /* 左右均分 */
   justify-content: space-around;
-  /* justify-content: space-between; */
+  
   // 左侧盒子
   .left-box {
     width: 478px;
