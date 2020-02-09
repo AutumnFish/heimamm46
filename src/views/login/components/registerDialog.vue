@@ -1,16 +1,16 @@
 <template>
-  <el-dialog  class="register-dialog" width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
+  <el-dialog class="register-dialog" width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
     <el-form :model="form" :rules="rules" ref="registerForm">
       <el-form-item label="昵称" prop="username" :label-width="formLabelWidth">
         <el-input v-model="form.username" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="邮箱" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+      <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
+        <el-input v-model="form.email" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="手机" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+      <el-form-item label="手机" prop="phone" :label-width="formLabelWidth">
+        <el-input v-model="form.phone" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item  label="密码" prop="password" :label-width="formLabelWidth">
+      <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
         <el-input show-password v-model="form.password" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="图形码" :label-width="formLabelWidth">
@@ -42,6 +42,31 @@
 </template>
 
 <script>
+// 定义校验函数 - 邮箱
+const checkEmail = (rule, value, callback) => {
+  // 获取数据 value
+  // 定义正则表达式 定义了一个正则对象
+  const reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+  // 校验方法 test 方法 是正则对象
+  if (reg.test(value) == true) {
+    callback();
+  } else {
+    callback(new Error('邮箱的格式不对哦'));
+  }
+};
+// 定义校验函数 - 手机
+const checkPhone = (rule, value, callback) => {
+  // 获取数据 value
+  // 定义正则表达式 定义了一个正则对象
+  const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+  // 校验方法 test 方法 是正则对象
+  if (reg.test(value) == true) {
+    callback();
+  } else {
+    callback(new Error('手机的格式不对哦'));
+  }
+};
+
 export default {
   data() {
     return {
@@ -52,7 +77,11 @@ export default {
         // 昵称
         username: '',
         // 密码
-        password: ''
+        password: '',
+        // 手机
+        phone: '',
+        // 邮箱
+        email: ''
       },
       // 校验规则
       rules: {
@@ -60,9 +89,17 @@ export default {
           { required: true, message: '用户名不能为空', trigger: 'blur' },
           { min: 6, max: 12, message: '用户名长度为 6 到 12 位', trigger: 'change' }
         ],
-         password: [
+        password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
           { min: 6, max: 12, message: '密码长度为 6 到 12 位', trigger: 'change' }
+        ],
+        phone: [
+          { required: true, message: '手机不能为空', trigger: 'blur' },
+          { validator: checkPhone, trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '邮箱不能为空', trigger: 'blur' },
+          { validator: checkEmail, trigger: 'blur' }
         ]
       },
       // 左侧的文本宽度
