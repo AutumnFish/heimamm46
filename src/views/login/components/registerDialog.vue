@@ -1,6 +1,21 @@
 <template>
   <el-dialog class="register-dialog" width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
     <el-form status-icon :model="form" :rules="rules" ref="registerForm">
+      <el-form-item label="头像">
+        <el-upload
+          class="avatar-uploader"
+          :action="uploadUrl"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+          name="image"
+        >
+          <!-- imageUrl有值，显示图片 -->
+          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+          <!-- imageUrl没有值 显示的是i标签 -->
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </el-form-item>
       <el-form-item label="昵称" prop="username" :label-width="formLabelWidth">
         <el-input v-model="form.username" autocomplete="off"></el-input>
       </el-form-item>
@@ -31,7 +46,7 @@
           </el-col>
           <el-col :span="7" :offset="1">
             <!-- 点击获取 短信验证码 -->
-            <el-button :disabled="delay!=0" @click="getSMS">
+            <el-button :disabled="delay != 0" @click="getSMS">
               {{ delay == 0 ? '点击获取验证码' : `还有${delay}秒继续获取` }}
             </el-button>
           </el-col>
@@ -116,11 +131,34 @@ export default {
       // 验证码图片地址
       codeURL: process.env.VUE_APP_URL + '/captcha?type=sendsms',
       // 倒计时时间
-      delay: 0
+      delay: 0,
+      // 本地图片预览地址
+      imageUrl: '',
+      // 头像上传的接口地址
+      uploadUrl:process.env.VUE_APP_URL+'/uploads'
     };
   },
   // 方法
   methods: {
+    // 上传成功
+    handleAvatarSuccess(res, file) {
+      window.console.log(res);
+      // URL.createObjectURL 生成的是本地的临时路径，刷新就没用了
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    // 上传之前
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || 'image/png';
+      // 1024*1024 1mb
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
     // 获取短信验证码
     getSMS() {
       // 如果为0开启倒计时
@@ -181,6 +219,34 @@ export default {
   .register-code {
     height: 40.8px;
     width: 100%;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader{
+    text-align: center;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409eff;
+  }
+
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
 }
 </style>
