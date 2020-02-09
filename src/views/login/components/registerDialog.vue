@@ -62,7 +62,10 @@
 
 <script>
 // 导入 axios
-import axios from 'axios';
+// import axios from 'axios';
+
+// 导入 接口
+import { sendsms } from '../../../api/register.js';
 
 // 定义校验函数 - 邮箱
 const checkEmail = (rule, value, callback) => {
@@ -135,7 +138,7 @@ export default {
       // 本地图片预览地址
       imageUrl: '',
       // 头像上传的接口地址
-      uploadUrl:process.env.VUE_APP_URL+'/uploads'
+      uploadUrl: process.env.VUE_APP_URL + '/uploads'
     };
   },
   // 方法
@@ -173,15 +176,19 @@ export default {
           }
         }, 100);
         // 调用接口
-        axios({
-          url: process.env.VUE_APP_URL + '/sendsms',
-          method: 'post',
-          data: {
-            code: this.form.code,
-            phone: this.form.phone
-          },
-          // 是否跨域携带cookie 默认是false
-          withCredentials: true
+        // axios({
+        //   url: process.env.VUE_APP_URL + '/sendsms',
+        //   method: 'post',
+        //   data: {
+        //     code: this.form.code,
+        //     phone: this.form.phone
+        //   },
+        //   // 是否跨域携带cookie 默认是false
+        //   withCredentials: true
+        // })
+        sendsms({
+          code: this.form.code,
+          phone: this.form.phone
         }).then(res => {
           // window.console.log(res)
           if (res.data.code === 200) {
@@ -227,7 +234,7 @@ export default {
     position: relative;
     overflow: hidden;
   }
-  .avatar-uploader{
+  .avatar-uploader {
     text-align: center;
   }
   .avatar-uploader .el-upload:hover {
