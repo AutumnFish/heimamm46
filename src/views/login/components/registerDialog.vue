@@ -1,8 +1,8 @@
 <template>
-  <el-dialog class="register-dialog" width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
-    <el-form :model="form">
-      <el-form-item label="昵称" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+  <el-dialog  class="register-dialog" width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
+    <el-form :model="form" :rules="rules" ref="registerForm">
+      <el-form-item label="昵称" prop="username" :label-width="formLabelWidth">
+        <el-input v-model="form.username" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="邮箱" :label-width="formLabelWidth">
         <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -10,12 +10,12 @@
       <el-form-item label="手机" :label-width="formLabelWidth">
         <el-input v-model="form.name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="密码" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+      <el-form-item  label="密码" prop="password" :label-width="formLabelWidth">
+        <el-input show-password v-model="form.password" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="图形码" :label-width="formLabelWidth">
         <el-row>
-          <el-col :span="16" >
+          <el-col :span="16">
             <el-input v-model="form.name" autocomplete="off"></el-input>
           </el-col>
           <el-col :span="7" :offset="1" class="register-box">
@@ -25,11 +25,11 @@
       </el-form-item>
       <el-form-item label="验证码" :label-width="formLabelWidth">
         <el-row>
-           <el-col :span="16" >
+          <el-col :span="16">
             <el-input v-model="form.name" autocomplete="off"></el-input>
           </el-col>
           <el-col :span="7" :offset="1">
-            <el-button >点击获取验证码</el-button>
+            <el-button>点击获取验证码</el-button>
           </el-col>
         </el-row>
       </el-form-item>
@@ -49,7 +49,21 @@ export default {
       dialogFormVisible: false,
       // 表单数据
       form: {
-        name: ''
+        // 昵称
+        username: '',
+        // 密码
+        password: ''
+      },
+      // 校验规则
+      rules: {
+        username: [
+          { required: true, message: '用户名不能为空', trigger: 'blur' },
+          { min: 6, max: 12, message: '用户名长度为 6 到 12 位', trigger: 'change' }
+        ],
+         password: [
+          { required: true, message: '密码不能为空', trigger: 'blur' },
+          { min: 6, max: 12, message: '密码长度为 6 到 12 位', trigger: 'change' }
+        ]
       },
       // 左侧的文本宽度
       formLabelWidth: '62px'
@@ -66,10 +80,10 @@ export default {
   .el-dialog__title {
     color: white;
   }
-  .register-box{
+  .register-box {
     height: 40.8px;
   }
-  .register-code{
+  .register-code {
     height: 40.8px;
     width: 100%;
   }
