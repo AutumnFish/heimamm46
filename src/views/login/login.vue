@@ -57,6 +57,10 @@
 <script>
 // 导入 注册对话框组件
 import registerDialog from './components/registerDialog.vue';
+
+// 测试基地址配置
+window.console.log(process.env.VUE_APP_URL);
+
 export default {
   // 组件的名字
   name: 'login',

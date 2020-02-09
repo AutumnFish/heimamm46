@@ -1,6 +1,6 @@
 <template>
   <el-dialog class="register-dialog" width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
-    <el-form :model="form" :rules="rules" ref="registerForm">
+    <el-form status-icon  :model="form" :rules="rules" ref="registerForm">
       <el-form-item label="昵称" prop="username" :label-width="formLabelWidth">
         <el-input v-model="form.username" autocomplete="off"></el-input>
       </el-form-item>
