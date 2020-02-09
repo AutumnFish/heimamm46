@@ -1,6 +1,6 @@
 <template>
   <el-dialog class="register-dialog" width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
-    <el-form status-icon  :model="form" :rules="rules" ref="registerForm">
+    <el-form status-icon :model="form" :rules="rules" ref="registerForm">
       <el-form-item label="昵称" prop="username" :label-width="formLabelWidth">
         <el-input v-model="form.username" autocomplete="off"></el-input>
       </el-form-item>
@@ -16,10 +16,11 @@
       <el-form-item label="图形码" :label-width="formLabelWidth">
         <el-row>
           <el-col :span="16">
-            <el-input v-model="form.name" autocomplete="off"></el-input>
+            <el-input v-model="form.code" autocomplete="off"></el-input>
           </el-col>
           <el-col :span="7" :offset="1" class="register-box">
-            <img class="register-code" :src="codeURL" alt="" />
+            <!-- 图片验证码 -->
+            <img @click="changeCode" class="register-code" :src="codeURL" alt="" />
           </el-col>
         </el-row>
       </el-form-item>
@@ -29,7 +30,10 @@
             <el-input v-model="form.name" autocomplete="off"></el-input>
           </el-col>
           <el-col :span="7" :offset="1">
-            <el-button>点击获取验证码</el-button>
+            <!-- 点击获取 短信验证码 -->
+            <el-button :disabled="delay!=0" @click="getSMS">
+              {{ delay == 0 ? '点击获取验证码' : `还有${delay}秒继续获取` }}
+            </el-button>
           </el-col>
         </el-row>
       </el-form-item>
@@ -42,6 +46,9 @@
 </template>
 
 <script>
+// 导入 axios
+import axios from 'axios';
+
 // 定义校验函数 - 邮箱
 const checkEmail = (rule, value, callback) => {
   // 获取数据 value
@@ -81,7 +88,9 @@ export default {
         // 手机
         phone: '',
         // 邮箱
-        email: ''
+        email: '',
+        // 图片验证码
+        code: ''
       },
       // 校验规则
       rules: {
@@ -105,8 +114,55 @@ export default {
       // 左侧的文本宽度
       formLabelWidth: '62px',
       // 验证码图片地址
-      codeURL:process.env.VUE_APP_URL+"/captcha?type=sendsms"
+      codeURL: process.env.VUE_APP_URL + '/captcha?type=sendsms',
+      // 倒计时时间
+      delay: 0
     };
+  },
+  // 方法
+  methods: {
+    // 获取短信验证码
+    getSMS() {
+      // 如果为0开启倒计时
+      if (this.delay == 0) {
+        this.delay = 60;
+        const interId = setInterval(() => {
+          // 时间的递减
+          this.delay--;
+          if (this.delay == 0) {
+            // 清除定时器
+            clearInterval(interId);
+          }
+        }, 100);
+        // 调用接口
+        axios({
+          url: process.env.VUE_APP_URL + '/sendsms',
+          method: 'post',
+          data: {
+            code: this.form.code,
+            phone: this.form.phone
+          },
+          // 是否跨域携带cookie 默认是false
+          withCredentials: true
+        }).then(res => {
+          // window.console.log(res)
+          if (res.data.code === 200) {
+            this.$message.success('验证码获取成功:' + res.data.data.captcha);
+          } else if (res.data.code === 0) {
+            this.$message.error(res.data.message);
+          }
+        });
+      }
+    },
+    // 重新生成验证码
+    changeCode() {
+      // 随机数
+      // this.codeURL = process.env.VUE_APP_URL+"/captcha?type=sendsms&"+Math.random()
+      // // 时间戳 用的更为频繁
+      // this.codeURL = process.env.VUE_APP_URL+"/captcha?type=sendsms&"+Date.now()
+      // 如果要更为规范 t= 或者其他的 键值都可以 t是time的缩写
+      this.codeURL = process.env.VUE_APP_URL + '/captcha?type=sendsms&t=' + Date.now();
+    }
   }
 };
 </script>
