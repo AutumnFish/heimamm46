@@ -13,7 +13,7 @@
       <!-- 表单 -->
       <el-form ref="loginForm" :rules="rules" :model="loginForm" label-width="43px">
         <!-- 手机号 -->
-        <el-form-item>
+        <el-form-item prop="phone">
           <el-input prefix-icon="el-icon-user" placeholder="请输入手机号" v-model="loginForm.phone"></el-input>
         </el-form-item>
         <!-- 密码 -->
@@ -26,7 +26,7 @@
             <el-col :span="17">
               <el-input prefix-icon="el-icon-key" placeholder="请输入验证码" v-model="loginForm.loginCode"></el-input>
             </el-col>
-            <el-col :span="7" class='code-col'>
+            <el-col :span="7" class="code-col">
               <!-- 登录验证码 -->
               <img class="login-code" src="../../assets/login_captcha.png" alt="" />
             </el-col>
@@ -57,12 +57,24 @@
 <script>
 // 导入 注册对话框组件
 import registerDialog from './components/registerDialog.vue';
+// 定义校验函数 - 手机
+const checkPhone = (rule, value, callback) => {
+  // 获取数据 value
+  // 定义正则表达式 定义了一个正则对象
+  const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+  // 校验方法 test 方法 是正则对象
+  if (reg.test(value) == true) {
+    callback();
+  } else {
+    callback(new Error('手机的格式不对哦'));
+  }
+};
 
 export default {
   // 组件的名字
   name: 'login',
   // 注册组件
-  components:{
+  components: {
     registerDialog // 省略了 属性值
   },
   data() {
@@ -79,6 +91,14 @@ export default {
       },
       // 校验规则
       rules: {
+        phone: [
+          {
+            required: true,
+            message: '手机号不能为空',
+            trigger: 'blur'
+          },
+          { validator: checkPhone, trigger: 'change' }
+        ],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
           { min: 6, max: 12, message: '密码的长度为6-12位', trigger: 'blur' }
@@ -109,7 +129,7 @@ export default {
       });
     },
     // 显示注册对话框
-    showRegister(){
+    showRegister() {
       // this.$refs 可以获取所有设置了ref属性的元素，包括组件
       // registerDialog 和上面设置的属性要一致
       // 也可以用 this.$refs['registerDialog']
@@ -172,7 +192,7 @@ export default {
       margin-left: 0;
     }
     // 验证码的 栅格容器
-    .code-col{
+    .code-col {
       height: 40.8px;
     }
   }
@@ -185,8 +205,5 @@ export default {
       display: flex;
     }
   }
-
 }
-
-
 </style>
