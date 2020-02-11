@@ -7,6 +7,8 @@ Vue.use(VueRouter)
 
 // 导入 组件 login
 import login from '../views/login/login.vue'
+// 导入 组件 index
+import index from '../views/index/index.vue'
 
 // 创建路由对象
 const router = new VueRouter({
@@ -17,6 +19,12 @@ const router = new VueRouter({
             path:"/login",
             // path:"/",
             component:login
+        },
+        // 首页
+        {
+            path:"/index",
+            // path:"/",
+            component:index
         }
     ]
 })
