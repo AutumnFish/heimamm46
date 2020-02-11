@@ -1,6 +1,6 @@
 <template>
   <el-dialog class="register-dialog" width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
-    <el-form status-icon :model="form" :rules="rules" ref="registerForm">
+    <el-form status-icon :model="form" :rules="rules" ref="registerForm" >
       <el-form-item label="头像" prop="avatar">
         <el-upload
           class="avatar-uploader"
@@ -42,7 +42,7 @@
       <el-form-item label="验证码" :label-width="formLabelWidth">
         <el-row>
           <el-col :span="16">
-            <el-input v-model="form.name" autocomplete="off"></el-input>
+            <el-input v-model="form.rcode" autocomplete="off"></el-input>
           </el-col>
           <el-col :span="7" :offset="1">
             <!-- 点击获取 短信验证码 -->
@@ -55,7 +55,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      <el-button type="primary" @click="submitForm('registerForm')">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -112,12 +112,14 @@ export default {
         // 图片验证码
         code: '',
         // 用户的头像地址
-        avatar: ''
+        avatar: '',
+        // 短信验证码
+        rcode:""
       },
       // 校验规则
       rules: {
         avatar: [
-          { required: true, message: '用户头像不能为空', trigger: 'blur' },
+          { required: true, message: '用户头像不能为空', trigger: 'change' },
         ],
         username: [
           { required: true, message: '用户名不能为空', trigger: 'blur' },
@@ -150,6 +152,23 @@ export default {
   },
   // 方法
   methods: {
+    // 表单的提交方法
+    // 提交表单
+    submitForm(formName) {
+      // 等同于 this.$refs['registerForm'] 相当于获取到了Element-ui的表单
+      // this.$refs['registerForm'] 等同于 this.$refs.registerForm
+      // validate这个方法是Element-ui的表单的方法
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$message.success('验证成功');
+          // 验证正确
+        } else {
+          this.$message.error('验证失败');
+          // 验证错误
+          return false;
+        }
+      });
+    },
     // 上传成功
     handleAvatarSuccess(res, file) {
       // window.console.log(res);
@@ -157,6 +176,8 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw);
       // 保存 服务器返回的图片地址
       this.form.avatar = res.data.file_path;
+      // 表单中 头像字段的校验
+      this.$refs.registerForm.validateField('avatar')
     },
     // 上传之前
     beforeAvatarUpload(file) {
