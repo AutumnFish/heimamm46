@@ -65,7 +65,10 @@
 // import axios from 'axios';
 
 // 导入 接口
-import { sendsms } from '../../../api/register.js';
+// import { sendsms } from '../../../api/register.js';
+// 使用@关键字简化编码
+import { sendsms } from '@/api/register.js';
+
 
 // 定义校验函数 - 邮箱
 const checkEmail = (rule, value, callback) => {
