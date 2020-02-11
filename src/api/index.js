@@ -11,7 +11,7 @@ const indexRequest = axios.create({
 })
 
 // 用户信息 接口
-export function info(data) {
+export function info() {
   return indexRequest({
       url:"/info",
       method:"get",
@@ -23,7 +23,7 @@ export function info(data) {
   })
 }
 // 用户的退出 接口
-export function logout(data) {
+export function logout() {
   return indexRequest({
       url:"/logout",
       method:"get",
