@@ -1,6 +1,6 @@
 <template>
   <el-dialog class="register-dialog" width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
-    <el-form status-icon :model="form" :rules="rules" ref="registerForm" >
+    <el-form status-icon :model="form" :rules="rules" ref="registerForm">
       <el-form-item label="头像" prop="avatar">
         <el-upload
           class="avatar-uploader"
@@ -67,7 +67,7 @@
 // 导入 接口
 // import { sendsms } from '../../../api/register.js';
 // 使用@关键字简化编码
-import { sendsms } from '@/api/register.js';
+import { sendsms, register } from '@/api/register.js';
 
 // 定义校验函数 - 邮箱
 const checkEmail = (rule, value, callback) => {
@@ -114,13 +114,11 @@ export default {
         // 用户的头像地址
         avatar: '',
         // 短信验证码
-        rcode:""
+        rcode: ''
       },
       // 校验规则
       rules: {
-        avatar: [
-          { required: true, message: '用户头像不能为空', trigger: 'change' },
-        ],
+        avatar: [{ required: true, message: '用户头像不能为空', trigger: 'change' }],
         username: [
           { required: true, message: '用户名不能为空', trigger: 'blur' },
           { min: 6, max: 12, message: '用户名长度为 6 到 12 位', trigger: 'change' }
@@ -160,8 +158,26 @@ export default {
       // validate这个方法是Element-ui的表单的方法
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$message.success('验证成功');
           // 验证正确
+          // 调用接口
+          register({
+            username: this.form.username,
+            password: this.form.password,
+            phone: this.form.phone,
+            email: this.form.email,
+            avatar: this.form.avatar,
+            rcode: this.form.rcode
+          }).then(res=>{
+            // window.console.log(res)
+            if(res.data.code===200){
+              this.$message.success("恭喜你，注册成功啦");
+              // 关闭对话框
+              this.dialogFormVisible = false;
+            }else if(res.data.code===201){
+              // 服务器返回的提示信息 弹出来
+              this.$message.error(res.data.message)
+            }
+          })
         } else {
           this.$message.error('验证失败');
           // 验证错误
@@ -177,12 +193,12 @@ export default {
       // 保存 服务器返回的图片地址
       this.form.avatar = res.data.file_path;
       // 表单中 头像字段的校验
-      this.$refs.registerForm.validateField('avatar')
+      this.$refs.registerForm.validateField('avatar');
     },
     // 上传之前
     beforeAvatarUpload(file) {
       // window.console.log(file);
-      const isJPG = file.type === 'image/jpeg' || 'image/png' ||"image/gif";
+      const isJPG = file.type === 'image/jpeg' || 'image/png' || 'image/gif';
       // 1024*1024 1mb
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {
