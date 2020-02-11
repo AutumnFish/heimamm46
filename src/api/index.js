@@ -15,8 +15,7 @@ export function info() {
   return indexRequest({
       url:"/info",
       method:"get",
-      // 设置请求头
-      // headers 是axios定义的设置方式
+      // 设置请求头 headers 是axios定义的设置方式
       headers:{
         token:getToken()
       }
@@ -27,8 +26,6 @@ export function logout() {
   return indexRequest({
       url:"/logout",
       method:"get",
-      // 设置请求头
-      // headers 是axios定义的设置方式
       headers:{
         token:getToken()
       }

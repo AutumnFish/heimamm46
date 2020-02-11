@@ -7,6 +7,7 @@ export function setToken(token) {
 }
 // 获取token
 export function getToken() {
+  // 获取到token之后为了让调用getToken函数的用户获取到值，必须要返回
   return window.localStorage.getItem(TOKENKEY);
 }
 // 移除token
