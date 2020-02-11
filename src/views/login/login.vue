@@ -61,6 +61,8 @@ import registerDialog from './components/registerDialog.vue';
 import { checkPhone } from '@/utils/validator.js';
 // 导入登录接口
 import { login } from '@/api/login.js';
+// 导入 token的工具函数
+import { setToken } from '@/utils/token.js';
 
 export default {
   // 组件的名字
@@ -124,24 +126,25 @@ export default {
           }
           // 验证通过
           login({
-            phone:this.loginForm.phone,
-            password:this.loginForm.password,
-            code:this.loginForm.loginCode
-          }).then(res=>{
+            phone: this.loginForm.phone,
+            password: this.loginForm.password,
+            code: this.loginForm.loginCode
+          }).then(res => {
             // window.console.log(res)
             // 正确
-            if(res.data.code===200){
-              this.$message.success("欢迎你")
+            if (res.data.code === 200) {
+              this.$message.success('欢迎你');
               // 服务器返回了token
               // token 保存到 哪里 localStorage（一直都在）  SessionStorage(刷新消失)
-              window.localStorage.setItem('heimammToken',res.data.data.token)
+              // window.localStorage.setItem('heimammToken', res.data.data.token);
+              setToken(res.data.data.token);
               // 跳转到首页
-              this.$router.push('/index')
-            }else if(res.data.code===202){
-              this.$message.error(res.data.message)
+              this.$router.push('/index');
+            } else if (res.data.code === 202) {
+              this.$message.error(res.data.message);
             }
             // 错误
-          })
+          });
         } else {
           this.$message.error('验证失败');
           // 验证错误
