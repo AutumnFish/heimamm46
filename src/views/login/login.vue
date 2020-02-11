@@ -28,7 +28,7 @@
             </el-col>
             <el-col :span="7" class="code-col">
               <!-- 登录验证码 -->
-              <img class="login-code" src="../../assets/login_captcha.png" alt="" />
+              <img @click="changeCode" class="login-code" :src="codeURL" alt="" />
             </el-col>
           </el-row>
         </el-form-item>
@@ -97,11 +97,17 @@ export default {
           { required: true, message: '验证码不能为空', trigger: 'blur' },
           { min: 4, max: 4, message: '验证码的长度为4位', trigger: 'blur' }
         ]
-      }
+      },
+      // 验证码的地址
+      codeURL:process.env.VUE_APP_URL+"/captcha?type=login"
     };
   },
   // 方法
   methods: {
+    // 刷新验证码
+    changeCode(){
+      this.codeURL = process.env.VUE_APP_URL+"/captcha?type=login&t="+Date.now()
+    },
     // 提交表单
     submitForm(formName) {
       // 等同于 this.$refs['loginForm'] 相当于获取到了Element-ui的表单
