@@ -53,7 +53,7 @@
 // 导入接口
 import { info, logout } from '@/api/index.js';
 // 导入 token函数
-import { removeToken } from '@/utils/token.js';
+import { removeToken, getToken } from '@/utils/token.js';
 export default {
   name: 'index',
   data() {
@@ -65,6 +65,16 @@ export default {
       // 是否折叠
       isCollapse: false
     };
+  },
+  // 生命周期钩子
+  beforeCreate() {
+    // 如果没有值
+    if (getToken() == undefined) {
+      // 提示用户
+      this.$message.warning('小老弟，请先登录');
+      // 打回登录页
+      this.$router.push('/login');
+    }
   },
   created() {
     info().then(res => {
