@@ -72,9 +72,6 @@ export default {
       // 服务器返回的头像地址不完整，需要进行拼接
       this.userIcon = process.env.VUE_APP_URL + '/' + res.data.data.avatar;
     });
-
-    // 打印路由地址
-    window.console.log(this.$route.path)
   },
   methods: {
     logout() {

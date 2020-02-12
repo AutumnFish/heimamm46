@@ -2,6 +2,12 @@
 import Vue from 'vue';
 // 导入Vue-router
 import VueRouter from 'vue-router';
+
+// 导入 进度条组件
+import NProgress from 'nprogress'
+// 导入 进度条样式
+import 'nprogress/nprogress.css'
+
 // 注册一下 use
 Vue.use(VueRouter);
 
@@ -67,5 +73,20 @@ const router = new VueRouter({
     }
   ]
 });
+
+// 导航守卫 beforeEach 进入之前
+router.beforeEach((to,from,next)=>{
+  // 开启进度条
+  NProgress.start()
+  // 向后走
+  next()
+})
+// 导航守卫 afterEach 进入完成之后
+// router.afterEach((to,from)=>{
+router.afterEach(()=>{
+  // 关闭进度条
+  NProgress.done()
+})
+
 // 暴露出去
 export default router;
