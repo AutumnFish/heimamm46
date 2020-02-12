@@ -83,6 +83,9 @@ const router = new VueRouter({
   ]
 });
 
+// 定义 路由白名单 （不需要登录就可以访问的页面）
+const whitePaths = ['/login'];
+
 // 导航守卫 beforeEach 进入之前
 router.beforeEach((to, from, next) => {
   // router.beforeEach((next)=>{
@@ -91,7 +94,9 @@ router.beforeEach((to, from, next) => {
   // 访问的页面是哪个
   // window.console.log(to.path)
   // 向后走
-  if (to.path != '/login') {
+  // if (to.path != '/login') {
+  // 白名单判断 不存在 转小写
+  if (whitePaths.includes(to.path.toLocaleLowerCase()) != true) {
     // 需要判断登录状态
     // token非空
     if (getToken() == undefined) {
