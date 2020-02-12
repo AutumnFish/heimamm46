@@ -16,25 +16,26 @@
     <el-container>
       <!-- 侧边栏 -->
       <el-aside width="auto" class="my-aside">
-        <el-menu :collapse="isCollapse" default-active="2" class="el-menu-vertical-demo">
-          <el-menu-item index="1">
+        <!-- 导航菜单 -->
+        <el-menu router :collapse="isCollapse" :default-active="$route.path" class="el-menu-vertical-demo">
+          <el-menu-item index="/index/chart">
             <!-- 图标 -->
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="/index/user">
             <i class="el-icon-user"></i>
             <span slot="title">用户列表</span>
           </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item index="/index/question">
             <i class="el-icon-edit-outline"></i>
             <span slot="title">题库列表</span>
           </el-menu-item>
-          <el-menu-item index="4">
+          <el-menu-item index="/index/enterprise">
             <i class="el-icon-office-building"></i>
             <span slot="title">企业列表</span>
           </el-menu-item>
-          <el-menu-item index="5">
+          <el-menu-item index="/index/subject">
             <i class="el-icon-notebook-2"></i>
             <span slot="title">学科列表</span>
           </el-menu-item>
@@ -71,6 +72,9 @@ export default {
       // 服务器返回的头像地址不完整，需要进行拼接
       this.userIcon = process.env.VUE_APP_URL + '/' + res.data.data.avatar;
     });
+
+    // 打印路由地址
+    window.console.log(this.$route.path)
   },
   methods: {
     logout() {

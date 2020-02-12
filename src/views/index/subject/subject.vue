@@ -1,5 +1,5 @@
 <template>
-  <div class="subject-container">企业列表</div>
+  <div class="subject-container">学科列表</div>
 </template>
 
 <script>

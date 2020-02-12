@@ -39,32 +39,27 @@ const router = new VueRouter({
       // 嵌套路由
       children: [
         {
-          // 路径不需要写 /
-          // 会被解析为 /index/chart
+          // 路径不需要写 /  被解析为 /index/chart
           path: 'chart',
           component: chart
         },
         {
-          // 路径不需要写 /
-          // 会被解析为 /index/user
+          // 路径不需要写 /  会被解析为 /index/user
           path: 'user',
           component: user
         },
         {
-          // 路径不需要写 /
-          // 会被解析为 /index/question
+          // 路径不需要写 /  会被解析为 /index/question
           path: 'question',
           component: question
         },
         {
-          // 路径不需要写 /
-          // 会被解析为 /index/enterprise
+          // 路径不需要写 /  会被解析为 /index/enterprise
           path: 'enterprise',
           component: enterprise
         },
         {
-          // 路径不需要写 /
-          // 会被解析为 /index/subject
+          // 路径不需要写 /  会被解析为 /index/subject
           path: 'subject',
           component: subject
         }
