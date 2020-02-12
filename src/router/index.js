@@ -9,10 +9,13 @@ import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
 // 导入token的工具函数 获取token
-import { getToken,removeToken } from '@/utils/token.js';
+import { getToken, removeToken } from '@/utils/token.js';
 
 // 导入 用户信息获取接口
 import { info } from '@/api/index.js';
+
+// 按需导入 Element-ui的弹框
+import { Message } from 'element-ui';
 
 // 注册一下 use
 Vue.use(VueRouter);
@@ -94,6 +97,7 @@ router.beforeEach((to, from, next) => {
     if (getToken() == undefined) {
       // 为空
       // this 不是 vue示例
+      Message.warning('登录状态有误，请检查');
       // 返回登录页
       next('/login');
     } else {
@@ -102,8 +106,9 @@ router.beforeEach((to, from, next) => {
         // window.console.log(res)
         if (res.data.code === 206) {
           // 提示用户
+          Message.warning('登录状态有误，请检查');
           // 删除token
-          removeToken()
+          removeToken();
           // 返回登录页
           next('/login');
         } else if (res.data.code === 200) {
