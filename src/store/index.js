@@ -12,6 +12,7 @@ const store = new Vuex.Store({
         // 用户的名字
         username:""
     },
+    // s 英文中的复数
     mutations:{
         // 修改头像
         changeIcon(state,newIcon){
