@@ -142,7 +142,6 @@ router.beforeEach((to, from, next) => {
           // 处理用户的信息 用户的头像
           const userIcon = process.env.VUE_APP_URL+"/"+res.data.data.avatar
           window.console.log(username,userIcon)
-          
           // 正确的
           next();
         }
