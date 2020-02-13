@@ -42,8 +42,8 @@ const router = new VueRouter({
   routes: [
     // 空地址的重定向
     {
-      path:"/",
-      redirect:"/login"
+      path: '/',
+      redirect: '/login'
     },
     // 登录
     {
@@ -101,6 +101,7 @@ router.beforeEach((to, from, next) => {
     // 不存在 提示用户，并打回登录页 缓存不存在 是null 要么用== 要么改为 null
     if (getToken() === null) {
       Message.warning('请先登录');
+      NProgress.done();
       next('/login');
     } else {
       // token 存在
@@ -111,10 +112,11 @@ router.beforeEach((to, from, next) => {
           // token有问题
           removeToken();
           Message.warning('登录状态有误，请重新登录');
+          NProgress.done();
           next('/login');
         } else if (res.data.code === 200) {
-          // 正确的 
-          next()
+          // 正确的
+          next();
         }
       });
     }
