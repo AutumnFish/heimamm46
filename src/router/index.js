@@ -137,6 +137,12 @@ router.beforeEach((to, from, next) => {
           NProgress.done();
           next('/login');
         } else if (res.data.code === 200) {
+          // 处理用户的信息 用户的名字
+          const username = res.data.data.username
+          // 处理用户的信息 用户的头像
+          const userIcon = process.env.VUE_APP_URL+"/"+res.data.data.avatar
+          window.console.log(username,userIcon)
+          
           // 正确的
           next();
         }
@@ -151,6 +157,7 @@ router.beforeEach((to, from, next) => {
 // 导航守卫 afterEach 进入完成之后
 // router.afterEach((to,from)=>{
 router.afterEach(to => {
+  // window.console.log(to)
   // 关闭进度条
   NProgress.done();
   // 修改标题
