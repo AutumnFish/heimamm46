@@ -44,44 +44,66 @@ const router = new VueRouter({
     {
       path: '/',
       redirect: '/login'
+      // component:login,
     },
     // 登录
     {
       path: '/login',
       // path:"/",
-      component: login
+      component: login,
+      meta: {
+        title: '登录'
+      }
     },
     // 首页
     {
       path: '/index',
       // path:"/",
       component: index,
+      meta: {
+        title: '首页'
+      },
       // 嵌套路由
       children: [
         {
           // 路径不需要写 /  被解析为 /index/chart
           path: 'chart',
-          component: chart
+          component: chart,
+          meta: {
+            title: '数据概览'
+          }
         },
         {
           // 路径不需要写 /  会被解析为 /index/user
           path: 'user',
-          component: user
+          component: user,
+          meta: {
+            title: '用户列表'
+          }
         },
         {
           // 路径不需要写 /  会被解析为 /index/question
           path: 'question',
-          component: question
+          component: question,
+          meta: {
+            title: '题库列表'
+          }
         },
         {
           // 路径不需要写 /  会被解析为 /index/enterprise
           path: 'enterprise',
-          component: enterprise
+          component: enterprise,
+          meta: {
+            title: '企业列表'
+          }
         },
         {
           // 路径不需要写 /  会被解析为 /index/subject
           path: 'subject',
-          component: subject
+          component: subject,
+          meta: {
+            title: '学科列表'
+          }
         }
       ]
     }
@@ -128,9 +150,11 @@ router.beforeEach((to, from, next) => {
 });
 // 导航守卫 afterEach 进入完成之后
 // router.afterEach((to,from)=>{
-router.afterEach(() => {
+router.afterEach(to => {
   // 关闭进度条
   NProgress.done();
+  // 修改标题
+  window.document.title = to.meta.title;
 });
 
 // 暴露出去
