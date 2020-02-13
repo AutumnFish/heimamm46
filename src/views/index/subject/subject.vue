@@ -44,6 +44,19 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- 分页器 -->
+      <el-pagination
+        class="my-pagination"
+        background
+        @size-change="sizeChange"
+        @current-change="currentChange"
+        :current-page="index"
+        :page-sizes="[2, 4, 5, 10]"
+        :page-size="size"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      >
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -80,7 +93,14 @@ export default {
           name: '王小虎',
           address: '上海市普陀区金沙江路 1516 弄'
         }
-      ]
+      ],
+      // 分页器的数据
+      // 页码
+      index: 1,
+      // 页容量
+      size: 5,
+      // 总条数
+      total: 20
     };
   },
   methods: {
@@ -96,6 +116,14 @@ export default {
     // 不允许
     handleNotAllow(index, row) {
       window.console.log(index, row);
+    },
+    // 页容量改变
+    sizeChange(val) {
+      window.console.log(`每页 ${val} 条`);
+    },
+    // 页码改变
+    currentChange(val) {
+      window.console.log(`当前页: ${val}`);
     }
   }
 };
@@ -113,6 +141,14 @@ export default {
     // 长一些的输入框
     .normal {
       width: 150px;
+    }
+  }
+  // 底部的卡片
+  .bottom-card {
+    margin-top: 19px;
+    .my-pagination{
+      margin-top: 30px;
+      text-align: center;
     }
   }
 }
