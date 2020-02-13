@@ -17,6 +17,9 @@ import { info } from '@/api/index.js';
 // 按需导入 Element-ui的弹框
 import { Message } from 'element-ui';
 
+// 导入仓库
+import store from '@/store/index.js'
+
 // 注册一下 use
 Vue.use(VueRouter);
 
@@ -141,7 +144,10 @@ router.beforeEach((to, from, next) => {
           const username = res.data.data.username
           // 处理用户的信息 用户的头像
           const userIcon = process.env.VUE_APP_URL+"/"+res.data.data.avatar
-          window.console.log(username,userIcon)
+          // 调用仓库的方法
+          store.commit("changeIcon",userIcon);
+          store.commit("changeName",username);
+          
           // 正确的
           next();
         }

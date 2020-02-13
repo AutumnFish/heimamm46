@@ -8,8 +8,8 @@
         <span>黑马面面</span>
       </div>
       <div class="right">
-        <img :src="userIcon" alt="" />
-        <span class="name">{{ username }},您好</span>
+        <img :src="$store.state.userIcon" alt="" />
+        <span class="name">{{ $store.state.username }},您好</span>
         <el-button type="primary" @click="logout">退出</el-button>
       </div>
     </el-header>
@@ -59,9 +59,9 @@ export default {
   data() {
     return {
       // 用户名
-      username: '',
+      // username: '',
       // 用户头像
-      userIcon: '',
+      // userIcon: '',
       // 是否折叠
       isCollapse: false
     };

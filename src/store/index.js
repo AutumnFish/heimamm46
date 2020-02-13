@@ -13,12 +13,17 @@ const store = new Vuex.Store({
         username:""
     },
     mutations:{
+        // 修改头像
         changeIcon(state,newIcon){
+            // window.console.log(newIcon)
             state.userIcon = newIcon
         },
+        // 修改名字
         changeName(state,newName){
+            // window.console.log(newName)
             state.username = newName
         }
     }
 })
 // 暴露出去
+export default store
