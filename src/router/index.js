@@ -40,6 +40,11 @@ import subject from '@/views/index/subject/subject.vue';
 const router = new VueRouter({
   // 路由规则
   routes: [
+    // 空地址的重定向
+    {
+      path:"/",
+      redirect:"/login"
+    },
     // 登录
     {
       path: '/login',
@@ -88,43 +93,34 @@ const whitePaths = ['/login'];
 
 // 导航守卫 beforeEach 进入之前
 router.beforeEach((to, from, next) => {
-  // router.beforeEach((next)=>{
   // 开启进度条
   NProgress.start();
-  // 访问的页面是哪个
-  // window.console.log(to.path)
-  // 向后走
-  // if (to.path != '/login') {
-  // 白名单判断 不存在 转小写
-  if (whitePaths.includes(to.path.toLocaleLowerCase()) != true) {
-    // 需要判断登录状态
-    // token非空
-    if (getToken() == undefined) {
-      // 为空
-      // this 不是 vue示例
-      Message.warning('登录状态有误，请检查');
-      // 返回登录页
+  // 白名单
+  if (whitePaths.includes(to.path.toLocaleLowerCase()) !== true) {
+    // 判断token 是否存在
+    // 不存在 提示用户，并打回登录页 缓存不存在 是null 要么用== 要么改为 null
+    if (getToken() === null) {
+      Message.warning('请先登录');
       next('/login');
     } else {
-      // token不为空 token正确判断
+      // token 存在
+      // 对错判断
       info().then(res => {
-        // window.console.log(res)
+        window.console.log(res);
         if (res.data.code === 206) {
-          // 提示用户
-          Message.warning('登录状态有误，请检查');
-          // 删除token
+          // token有问题
           removeToken();
-          // 返回登录页
+          Message.warning('登录状态有误，请重新登录');
           next('/login');
         } else if (res.data.code === 200) {
-          // 获取成功
-          // 放走
-          next();
+          // 正确的 
+          next()
         }
       });
     }
   } else {
-    // 是登录页
+    // 白名单中的页面
+    // 放走
     next();
   }
 });
