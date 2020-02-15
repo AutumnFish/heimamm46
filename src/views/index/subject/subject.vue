@@ -30,16 +30,24 @@
       <!-- 表格 -->
       <el-table :data="tableData" style="width: 100%">
         <el-table-column type="index" width="50" label="索引"> </el-table-column>
-        <el-table-column prop="date" label="学科编号"> </el-table-column>
-        <el-table-column prop="date" label="学科名称"> </el-table-column>
-        <el-table-column prop="date" label="简称"> </el-table-column>
-        <el-table-column prop="date" label="创建者"> </el-table-column>
-        <el-table-column prop="name" label="创建日期"> </el-table-column>
-        <el-table-column prop="address" label="状态"> </el-table-column>
+        <el-table-column prop="rid" label="学科编号"> </el-table-column>
+        <el-table-column prop="name" label="学科名称"> </el-table-column>
+        <el-table-column prop="short_name" label="简称"> </el-table-column>
+        <el-table-column prop="username" label="创建者"> </el-table-column>
+        <el-table-column prop="create_time" label="创建日期"> </el-table-column>
+        <el-table-column prop="status" label="状态">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status === 1">启用</span>
+            <span style="color:red" v-else>禁用</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="niubi">
             <el-button type="text" size="mini" @click="handleEdit(niubi.$index, niubi.row)">编辑</el-button>
-            <el-button type="text" @click="handleNotAllow(niubi.$index, niubi.row)">禁用</el-button>
+            <!-- 启用，禁用 -->
+            <el-button type="text" @click="handleNotAllow(niubi.$index, niubi.row)">
+              {{ niubi.row.status === 1 ? '禁用' : '启用' }}
+            </el-button>
             <el-button size="mini" type="text" @click="handleDelete(niubi.$index, niubi.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -62,8 +70,15 @@
 </template>
 
 <script>
+// 导入接口
+import { subjectList, subjectStatus } from '@/api/subject.js';
 export default {
   name: 'subject',
+  // 生命周期钩子
+  created() {
+    // 获取数据
+    this.getData()
+  },
   data() {
     return {
       // 顶部表单的数据
@@ -104,6 +119,14 @@ export default {
     };
   },
   methods: {
+    // 获取数据的方法
+    getData() {
+      subjectList().then(res => {
+        window.console.log(res);
+        // 设置给table
+        this.tableData = res.data.items;
+      });
+    },
     // 编辑
     handleEdit(index, row) {
       window.console.log(index, row);
@@ -115,7 +138,17 @@ export default {
     },
     // 不允许
     handleNotAllow(index, row) {
-      window.console.log(index, row);
+      // window.console.log(index, row);
+      subjectStatus({
+        id: row.id
+      }).then(res => {
+        // window.console.log(res)
+        if (res.code === 200) {
+          this.$message.success("状态修改成功！")
+          // 重新获取数据
+          this.getData()
+        }
+      });
     },
     // 页容量改变
     sizeChange(val) {
@@ -146,7 +179,7 @@ export default {
   // 底部的卡片
   .bottom-card {
     margin-top: 19px;
-    .my-pagination{
+    .my-pagination {
       margin-top: 30px;
       text-align: center;
     }

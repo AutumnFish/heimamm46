@@ -132,7 +132,7 @@ router.beforeEach((to, from, next) => {
       // token 存在
       // 对错判断
       info().then(res => {
-        window.console.log(res);
+        // window.console.log(res);
         if (res.data.code === 206) {
           // token有问题
           removeToken();
@@ -147,7 +147,6 @@ router.beforeEach((to, from, next) => {
           // 调用仓库的方法
           store.commit("changeIcon",userIcon);
           store.commit("changeName",username);
-          
           // 正确的
           next();
         }
