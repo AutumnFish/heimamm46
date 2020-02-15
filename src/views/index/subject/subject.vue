@@ -21,7 +21,7 @@
         <el-form-item>
           <el-button type="primary">查询</el-button>
           <el-button>清除</el-button>
-          <el-button icon="el-icon-plus" type="primary">新增学科</el-button>
+          <el-button @click="$refs.subjectAdd.dialogFormVisible = true" icon="el-icon-plus" type="primary">新增学科</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -66,18 +66,26 @@
       >
       </el-pagination>
     </el-card>
+    <!-- 新增对话框 -->
+    <subjectAdd ref="subjectAdd"></subjectAdd>
   </div>
 </template>
 
 <script>
 // 导入接口
 import { subjectList, subjectStatus } from '@/api/subject.js';
+// 导入新增对话框
+import subjectAdd from './components/subjectAdd.vue';
 export default {
   name: 'subject',
+  // 注册组件
+  components: {
+    subjectAdd
+  },
   // 生命周期钩子
   created() {
     // 获取数据
-    this.getData()
+    this.getData();
   },
   data() {
     return {
@@ -136,7 +144,7 @@ export default {
     handleDelete(index, row) {
       window.console.log(index, row);
     },
-    // 不允许
+    // 状态切换
     handleNotAllow(index, row) {
       // window.console.log(index, row);
       subjectStatus({
@@ -144,9 +152,9 @@ export default {
       }).then(res => {
         // window.console.log(res)
         if (res.code === 200) {
-          this.$message.success("状态修改成功！")
+          this.$message.success('状态修改成功！');
           // 重新获取数据
-          this.getData()
+          this.getData();
         }
       });
     },
