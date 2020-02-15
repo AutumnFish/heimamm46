@@ -129,10 +129,17 @@ export default {
   methods: {
     // 获取数据的方法
     getData() {
-      subjectList().then(res => {
+      subjectList({
+        // 页码
+        page: this.index,
+        // 页容量
+        limit: this.size
+      }).then(res => {
         window.console.log(res);
         // 设置给table
         this.tableData = res.data.items;
+        // 总条数保存起来
+        this.total = res.data.pagination.total;
       });
     },
     // 编辑
@@ -160,11 +167,21 @@ export default {
     },
     // 页容量改变
     sizeChange(val) {
-      window.console.log(`每页 ${val} 条`);
+      // window.console.log(`每页 ${val} 条`);
+      // 返回第一页
+      this.index = 1
+      // 设置新的页容量
+      this.size = val;
+      // 重新获取数据
+      this.getData()
     },
     // 页码改变
     currentChange(val) {
       window.console.log(`当前页: ${val}`);
+      // 保存页码
+      this.index = val;
+      // 重新调用即可
+      this.getData();
     }
   }
 };
