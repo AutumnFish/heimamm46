@@ -1,5 +1,5 @@
 <template>
-  <el-dialog class="subject-add" width="600px" center title="编辑学科" :visible.sync="dialogFormVisible">
+  <el-dialog class="subject-edit" width="600px" center title="编辑学科" :visible.sync="dialogFormVisible">
     <el-form :model="form" ref="subjectEdit" :rules="rules">
       <el-form-item prop="rid" label="学科编号" :label-width="formLabelWidth">
         <el-input v-model="form.rid" autocomplete="off"></el-input>
@@ -26,9 +26,9 @@
 
 <script>
 // 导入编辑接口
-import { subjectAdd } from '@/api/subject.js';
+import { subjectEdit } from '@/api/subject.js';
 export default {
-  name: 'subjectAdd',
+  name: 'subjectEdit',
   data() {
     return {
       // 是否显示对话框
@@ -60,8 +60,8 @@ export default {
         if (valid) {
           // 成功
           // 把form对象的所有键值对 全部传递进来
-          subjectAdd(this.form).then(res=>{
-            // window.console.log(res)
+          subjectEdit(this.form).then(res=>{
+            window.console.log(res)
             if(res.code===200){
               // 关闭对话框
               this.dialogFormVisible = false;
@@ -71,7 +71,8 @@ export default {
               this.$parent.getData()
               this.$message.success('编辑成功')
             }else if(res.code===201){
-              this.$message.warning(res.message)
+              // this.$message.warning(res.message)
+              this.$message.warning("学科编号不能重复哦，请检查")
             }
           })
         } else {
@@ -86,7 +87,7 @@ export default {
 </script>
 
 <style lang="less">
-.subject-add {
+.subject-edit {
   .el-dialog__header {
     background: linear-gradient(to right, #00c6f9, #1495fb);
   }
