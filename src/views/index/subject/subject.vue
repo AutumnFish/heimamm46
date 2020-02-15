@@ -76,7 +76,7 @@
 
 <script>
 // 导入接口
-import { subjectList, subjectStatus } from '@/api/subject.js';
+import { subjectList, subjectStatus, subjectRemove } from '@/api/subject.js';
 // 导入新增对话框
 import subjectAdd from './components/subjectAdd.vue';
 // 导入 编辑对话框
@@ -175,7 +175,7 @@ export default {
         this.total = res.data.pagination.total;
       });
     },
-    // 编辑
+    // 编辑学科模块 - 修改02 -保存修改
     handleEdit(index, row) {
       // window.console.log(index, row);
       // row.name = '王二花';
@@ -184,19 +184,39 @@ export default {
       // 设置数据 这一行的数据
       // this.$refs.subjectEdit.form = row;
 
-
-      // 创建一个完全一样的 数据 进行复制 
+      // 创建一个完全一样的 数据 进行复制
       // 返回的是 字符串（基本数据类型）
       // const rowStr = JSON.stringify(row);
       // 根据字符串转回对象  string->对象
       // this.$refs.subjectEdit.form = JSON.parse(rowStr)
 
       // 一行搞定 obj->string->新的obj
-      this.$refs.subjectEdit.form = JSON.parse(JSON.stringify(row))
+      this.$refs.subjectEdit.form = JSON.parse(JSON.stringify(row));
     },
     // 删除
     handleDelete(index, row) {
-      window.console.log(index, row);
+      // window.console.log(index, row);
+      const id = row.id;
+      this.$confirm('此操作将永久删除该学科, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          // 确定
+          subjectRemove({
+            id
+          }).then(res=>{
+            // window.console.log(res)
+            if(res.code===200){
+              this.$message.success('删除成功')
+              this.getData()
+            }
+          })
+        })
+        .catch(() => {
+          
+        });
     },
     // 状态切换
     handleNotAllow(index, row) {
