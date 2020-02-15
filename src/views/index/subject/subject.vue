@@ -3,16 +3,16 @@
     <!-- 顶部的盒子 -->
     <el-card class="top-card">
       <el-form ref="formInline" :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="学科编号" prop="rid" >
+        <el-form-item label="学科编号" prop="rid">
           <el-input class="short" v-model="formInline.rid" placeholder="学科编号"></el-input>
         </el-form-item>
-        <el-form-item label="学科名称" prop="name" >
+        <el-form-item label="学科名称" prop="name">
           <el-input class="normal" v-model="formInline.name" placeholder="学科名称"></el-input>
         </el-form-item>
-        <el-form-item label="创建者" prop="username" >
+        <el-form-item label="创建者" prop="username">
           <el-input class="short" v-model="formInline.username" placeholder="创建者"></el-input>
         </el-form-item>
-        <el-form-item label="状态" prop="status" >
+        <el-form-item label="状态" prop="status">
           <el-select class="normal" v-model="formInline.status" placeholder="状态">
             <el-option label="所有" value=""></el-option>
             <el-option label="禁用" value="0"></el-option>
@@ -69,6 +69,8 @@
     </el-card>
     <!-- 新增对话框 -->
     <subjectAdd ref="subjectAdd"></subjectAdd>
+    <!-- 编辑对话框 -->
+    <subjectEdit ref="subjectEdit"></subjectEdit>
   </div>
 </template>
 
@@ -77,11 +79,14 @@
 import { subjectList, subjectStatus } from '@/api/subject.js';
 // 导入新增对话框
 import subjectAdd from './components/subjectAdd.vue';
+// 导入 编辑对话框
+import subjectEdit from './components/subjectEdit.vue';
 export default {
   name: 'subject',
   // 注册组件
   components: {
-    subjectAdd
+    subjectAdd,
+    subjectEdit
   },
   // 生命周期钩子
   created() {
@@ -93,13 +98,13 @@ export default {
       // 顶部表单的数据
       formInline: {
         // 学科名
-        name:"",
+        name: '',
         // 学科编号
-        rid:"",
+        rid: '',
         // 状态
-        status:"",
+        status: '',
         // 创建者名
-        username:""
+        username: ''
       },
       // 底部表格的数据
       tableData: [
@@ -135,21 +140,23 @@ export default {
   },
   methods: {
     // 清空搜索
-    clearSeach(){
+    clearSeach() {
       // 清空表单
       // resetFields Element-ui提供的
-      this.$refs.formInline.resetFields()
+      // 和点语法等价
+      // this.$refs['formInline'].resetFields()
+      this.$refs.formInline.resetFields();
       // 返回第一页
-      this.index=1;
+      this.index = 1;
       // 重新获取数据 内部已经实现了筛选条件的合并
-      this.getData()
+      this.getData();
     },
     // 学科搜索
-    searchSubject(){
+    searchSubject() {
       // 跳转到第一页
-      this.index=1;
+      this.index = 1;
       // 调用getData即可
-      this.getData()
+      this.getData();
     },
     // 获取数据的方法
     getData() {
@@ -170,8 +177,22 @@ export default {
     },
     // 编辑
     handleEdit(index, row) {
-      window.console.log(index, row);
-      row.name = '王二花';
+      // window.console.log(index, row);
+      // row.name = '王二花';
+      // 弹出编辑框
+      this.$refs.subjectEdit.dialogFormVisible = true;
+      // 设置数据 这一行的数据
+      // this.$refs.subjectEdit.form = row;
+
+
+      // 创建一个完全一样的 数据 进行复制 
+      // 返回的是 字符串（基本数据类型）
+      // const rowStr = JSON.stringify(row);
+      // 根据字符串转回对象  string->对象
+      // this.$refs.subjectEdit.form = JSON.parse(rowStr)
+
+      // 一行搞定 obj->string->新的obj
+      this.$refs.subjectEdit.form = JSON.parse(JSON.stringify(row))
     },
     // 删除
     handleDelete(index, row) {
@@ -195,11 +216,11 @@ export default {
     sizeChange(val) {
       // window.console.log(`每页 ${val} 条`);
       // 返回第一页
-      this.index = 1
+      this.index = 1;
       // 设置新的页容量
       this.size = val;
       // 重新获取数据
-      this.getData()
+      this.getData();
     },
     // 页码改变
     currentChange(val) {

@@ -66,7 +66,8 @@ export function subjectList(params) {
     url: '/subject/list',
     method: 'get',
     // get请求的参数如何设置
-    params
+    params 
+    // data
   });
 }
 // 学科添加
