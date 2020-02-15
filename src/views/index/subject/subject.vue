@@ -4,22 +4,22 @@
     <el-card class="top-card">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="学科编号">
-          <el-input class="short" v-model="formInline.user" placeholder="审批人"></el-input>
+          <el-input class="short" v-model="formInline.rid" placeholder="学科编号"></el-input>
         </el-form-item>
         <el-form-item label="学科名称">
-          <el-input class="normal" v-model="formInline.user" placeholder="审批人"></el-input>
+          <el-input class="normal" v-model="formInline.name" placeholder="学科名称"></el-input>
         </el-form-item>
         <el-form-item label="创建者">
-          <el-input class="short" v-model="formInline.user" placeholder="审批人"></el-input>
+          <el-input class="short" v-model="formInline.username" placeholder="创建者"></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select class="normal" v-model="formInline.region" placeholder="活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+          <el-select class="normal" v-model="formInline.status" placeholder="状态">
+            <el-option label="禁用" value="0"></el-option>
+            <el-option label="启用" value="1"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">查询</el-button>
+          <el-button @click="searchSubject" type="primary">查询</el-button>
           <el-button>清除</el-button>
           <el-button @click="$refs.subjectAdd.dialogFormVisible = true" icon="el-icon-plus" type="primary">新增学科</el-button>
         </el-form-item>
@@ -91,8 +91,14 @@ export default {
     return {
       // 顶部表单的数据
       formInline: {
-        user: '',
-        region: ''
+        // 学科名
+        name:"",
+        // 学科编号
+        rid:"",
+        // 状态
+        status:"",
+        // 创建者名
+        username:""
       },
       // 底部表格的数据
       tableData: [
@@ -127,13 +133,22 @@ export default {
     };
   },
   methods: {
+    // 学科搜索
+    searchSubject(){
+      // 跳转到第一页
+      this.index=1;
+      // 调用getData即可
+      this.getData()
+    },
     // 获取数据的方法
     getData() {
       subjectList({
         // 页码
         page: this.index,
         // 页容量
-        limit: this.size
+        limit: this.size,
+        // 合并筛选条件 展开运算符
+        ...this.formInline
       }).then(res => {
         window.console.log(res);
         // 设置给table
