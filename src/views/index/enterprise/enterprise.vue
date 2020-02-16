@@ -20,7 +20,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button @click="searchSubject" type="primary">搜索</el-button>
+          <el-button @click="searchEnterprise" type="primary">搜索</el-button>
           <el-button @click="clearSeach">清除</el-button>
           <el-button @click="$refs.enterpriseAdd.dialogFormVisible = true" icon="el-icon-plus" type="primary">新增企业</el-button>
         </el-form-item>
@@ -37,13 +37,13 @@
         <el-table-column prop="create_time" label="创建日期">
           <template slot-scope="scope">
             <!-- 使用全局过滤器 -->
-              {{ scope.row.create_time | formatTime }}
+            {{ scope.row.create_time | formatTime }}
           </template>
         </el-table-column>
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
-              <span v-if="scope.row.status===1">启用</span>
-              <span v-else style="color:red">禁用</span>
+            <span v-if="scope.row.status === 1">启用</span>
+            <span v-else style="color:red">禁用</span>
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -51,7 +51,7 @@
             <el-button type="text" size="mini" @click="handleEdit(niubi.$index, niubi.row)">编辑</el-button>
             <!-- 启用，禁用 -->
             <el-button type="text" @click="handleNotAllow(niubi.$index, niubi.row)">
-              {{ niubi.row.status===1?'禁用':"启用" }}
+              {{ niubi.row.status === 1 ? '禁用' : '启用' }}
             </el-button>
             <el-button size="mini" type="text" @click="handleDelete(niubi.$index, niubi.row)">删除</el-button>
           </template>
@@ -78,19 +78,19 @@
 
 <script>
 // 导入接口
-import {enterpriseList} from '@/api/enterprise.js'
+import { enterpriseList } from '@/api/enterprise.js';
 // 导入新增组件
-import enterpriseAdd from './components/enterpriseAdd.vue'
+import enterpriseAdd from './components/enterpriseAdd.vue';
 export default {
   name: 'enterprise',
   data() {
     return {
       // 顶部表单的数据
       formInline: {
-        // 学科名
+        // 企业名
         name: '',
-        // 学科编号
-        rid: '',
+        // 企业编号
+        eid: '',
         // 状态
         status: '',
         // 创建者名
@@ -129,16 +129,31 @@ export default {
     };
   },
   // 注册组件
-  components:{
+  components: {
     enterpriseAdd
   },
   created() {
-    enterpriseList().then(res=>{
-      // window.console.log(res)
-      // 保存数据
-      this.tableData =res.data.items;
-    })
+    // 获取数据
+    this.getData();
   },
+  methods: {
+    // 搜索企业
+    searchEnterprise(){
+      // 调用数据获取逻辑
+      this.getData()
+    },
+    // 获取逻辑
+    getData() {
+      enterpriseList({
+        // 把筛选条件合并
+        ...this.formInline
+      }).then(res => {
+        // window.console.log(res)
+        // 保存数据
+        this.tableData = res.data.items;
+      });
+    }
+  }
 };
 </script>
 
