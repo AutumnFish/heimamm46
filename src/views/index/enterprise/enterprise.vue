@@ -73,6 +73,7 @@
     </el-card>
     <!-- 新增对话框 -->
     <enterpriseAdd ref="enterpriseAdd"></enterpriseAdd>
+  
   </div>
 </template>
 
@@ -151,7 +152,7 @@ export default {
         .then(() => {
           // 确定
           enterpriseRemove({
-            id
+             id   // 或者  id:row.id  或者 id:id
           }).then(res => {
             if (res.code === 200) {
               // 页码异常处理
@@ -167,6 +168,7 @@ export default {
           });
         })
         .catch(() => {});
+
     },
     // 页码改变
     currentChange(newIndex) {
