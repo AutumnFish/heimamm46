@@ -22,7 +22,7 @@
         <el-form-item>
           <el-button @click="searchEnterprise" type="primary">搜索</el-button>
           <el-button @click="clearSeach">清除</el-button>
-          <el-button @click="$refs.enterpriseAdd.dialogFormVisible = true" icon="el-icon-plus" type="primary">新增企业</el-button>
+          <el-button @click="showAdd" icon="el-icon-plus" type="primary">新增企业</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -72,9 +72,12 @@
       </el-pagination>
     </el-card>
     <!-- 新增对话框 -->
-    <enterpriseAdd ref="enterpriseAdd"></enterpriseAdd>
+    <!-- <enterpriseAdd ref="enterpriseAdd"></enterpriseAdd> -->
     <!-- 编辑对话框 -->
-    <enterpriseEdit ref='enterpriseEdit'></enterpriseEdit>
+    <!-- <enterpriseEdit ref='enterpriseEdit'></enterpriseEdit> -->
+
+    <!-- 公共的对话框，编辑和新增 -->
+    <enterpriseDialog ref="enterpriseDialog"></enterpriseDialog>
 
   </div>
 </template>
@@ -83,9 +86,11 @@
 // 导入接口
 import { enterpriseList, enterpriseRemove,enterpriseStatus } from '@/api/enterprise.js';
 // 导入新增组件
-import enterpriseAdd from './components/enterpriseAdd.vue';
+// import enterpriseAdd from './components/enterpriseAdd.vue';
 // 导入 编辑组件
-import enterpriseEdit from './components/enterpriseEdit.vue';
+// import enterpriseEdit from './components/enterpriseEdit.vue';
+// 导入 对话框 既可以编辑又可以修改
+import enterpriseDialog from './components/enterpriseDialog.vue'
 export default {
   name: 'enterprise',
   data() {
@@ -135,20 +140,39 @@ export default {
   },
   // 注册组件
   components: {
-    enterpriseAdd,
-    enterpriseEdit
+    // enterpriseAdd,
+    // enterpriseEdit,
+    enterpriseDialog
   },
   created() {
     // 获取数据
     this.getData();
   },
   methods: {
+    // 进入新增状态
+    showAdd(){
+        // 使用公共的对话框
+      this.$refs.enterpriseDialog.dialogFormVisible = true;
+      // 修改公共对话框的 标记字段  改为false  新增状态
+      this.$refs.enterpriseDialog.isEdit=false;
+      // 清空表单中的数据
+      this.$refs.enterpriseDialog.$refs.enterpriseDialog.resetFields()
+    },
     // 进入编辑状态
     handleEdit(index,row){
       // 弹出编辑框
-      this.$refs.enterpriseEdit.dialogFormVisible=true
+      // this.$refs.enterpriseEdit.dialogFormVisible=true
       // 设置数据 新的副本
-      this.$refs.enterpriseEdit.form = JSON.parse(JSON.stringify(row));
+      // this.$refs.enterpriseEdit.form = JSON.parse(JSON.stringify(row));
+
+      // 使用公共的对话框
+      this.$refs.enterpriseDialog.dialogFormVisible = true;
+      // 修改公共对话框的 标记字段 
+      this.$refs.enterpriseDialog.isEdit=true;
+
+      // 设置数据 新的副本
+      this.$refs.enterpriseDialog.form = JSON.parse(JSON.stringify(row));
+
     },
     // 状态的切换
     changeStatus(index,row){
