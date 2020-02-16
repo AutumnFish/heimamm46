@@ -3,8 +3,8 @@
     <!-- 顶部的盒子 -->
     <el-card class="top-card">
       <el-form ref="formInline" :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="企业编号" prop="rid">
-          <el-input class="short" v-model="formInline.rid" placeholder="企业编号"></el-input>
+        <el-form-item label="企业编号" prop="eid">
+          <el-input class="short" v-model="formInline.eid" placeholder="企业编号"></el-input>
         </el-form-item>
         <el-form-item label="企业名称" prop="name">
           <el-input class="normal" v-model="formInline.name" placeholder="企业名称"></el-input>
@@ -31,20 +31,27 @@
       <!-- 表格 -->
       <el-table :data="tableData" style="width: 100%">
         <el-table-column type="index" width="50" label="序号"> </el-table-column>
-        <el-table-column prop="rid" label="企业编号"> </el-table-column>
+        <el-table-column prop="eid" label="企业编号"> </el-table-column>
         <el-table-column prop="name" label="企业名称"> </el-table-column>
         <el-table-column prop="username" label="创建者"> </el-table-column>
         <el-table-column prop="create_time" label="创建日期">
-        
+          <template slot-scope="scope">
+            <!-- 使用全局过滤器 -->
+              {{ scope.row.create_time | formatTime }}
+          </template>
         </el-table-column>
         <el-table-column prop="status" label="状态">
-    
+          <template slot-scope="scope">
+              <span v-if="scope.row.status===1">启用</span>
+              <span v-else style="color:red">禁用</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="niubi">
             <el-button type="text" size="mini" @click="handleEdit(niubi.$index, niubi.row)">编辑</el-button>
             <!-- 启用，禁用 -->
             <el-button type="text" @click="handleNotAllow(niubi.$index, niubi.row)">
+              {{ niubi.row.status===1?'禁用':"启用" }}
             </el-button>
             <el-button size="mini" type="text" @click="handleDelete(niubi.$index, niubi.row)">删除</el-button>
           </template>
@@ -68,6 +75,8 @@
 </template>
 
 <script>
+// 导入接口
+import {enterpriseList} from '@/api/enterprise.js'
 export default {
   name: 'enterprise',
   data() {
@@ -114,7 +123,14 @@ export default {
       // 总条数
       total: 20
     };
-  }
+  },
+  created() {
+    enterpriseList().then(res=>{
+      // window.console.log(res)
+      // 保存数据
+      this.tableData =res.data.items;
+    })
+  },
 };
 </script>
 

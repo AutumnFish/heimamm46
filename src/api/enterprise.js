@@ -1,7 +1,6 @@
 // 直接导入 创建公共的请求对象
 import request from '@/utils/request.js'
 
-
 // 删除接口
 export function enterpriseRemove(data){
     return request({
