@@ -22,7 +22,7 @@
         <el-form-item>
           <el-button @click="searchSubject" type="primary">搜索</el-button>
           <el-button @click="clearSeach">清除</el-button>
-          <el-button @click="$refs.subjectAdd.dialogFormVisible = true" icon="el-icon-plus" type="primary">新增企业</el-button>
+          <el-button @click="$refs.enterpriseAdd.dialogFormVisible = true" icon="el-icon-plus" type="primary">新增企业</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -71,12 +71,16 @@
       >
       </el-pagination>
     </el-card>
+    <!-- 新增对话框 -->
+    <enterpriseAdd ref="enterpriseAdd"></enterpriseAdd>
   </div>
 </template>
 
 <script>
 // 导入接口
 import {enterpriseList} from '@/api/enterprise.js'
+// 导入新增组件
+import enterpriseAdd from './components/enterpriseAdd.vue'
 export default {
   name: 'enterprise',
   data() {
@@ -123,6 +127,10 @@ export default {
       // 总条数
       total: 20
     };
+  },
+  // 注册组件
+  components:{
+    enterpriseAdd
   },
   created() {
     enterpriseList().then(res=>{
