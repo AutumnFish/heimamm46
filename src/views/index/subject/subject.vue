@@ -190,8 +190,13 @@ export default {
       // 根据字符串转回对象  string->对象
       // this.$refs.subjectEdit.form = JSON.parse(rowStr)
 
-      // 一行搞定 obj->string->新的obj
-      this.$refs.subjectEdit.form = JSON.parse(JSON.stringify(row));
+      // 如果id改变了 说明是重新编辑 再赋值
+      if(row.id!=this.$refs.subjectEdit.form.id){
+        // 一行搞定 obj->string->新的obj
+        this.$refs.subjectEdit.form = JSON.parse(JSON.stringify(row));
+      }else {
+        // 相等的，不需要执行逻辑
+      }
     },
     // 删除
     handleDelete(index, row) {
