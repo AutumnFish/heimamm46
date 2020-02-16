@@ -210,6 +210,17 @@ export default {
             // window.console.log(res)
             if(res.code===200){
               this.$message.success('删除成功')
+              // 增加最后一页的判断
+              if(this.tableData.length==1){
+                // 服务器的已经被删除
+                // 继续获取这一页的数据，会拿不到
+                // 页码--
+                this.index--;
+                // 如果已经是第一页
+                if(this.index<=0){
+                  this.index=1;
+                }
+              }
               this.getData()
             }
           })
