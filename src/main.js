@@ -18,6 +18,9 @@ import './style/base.css'
 
 Vue.config.productionTip = false
 
+// 导入全局过滤器 不需要接收，只需要保证代码执行即可
+import '@/filters/index.js'
+
 
 new Vue({
   render: h => h(App),
