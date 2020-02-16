@@ -87,15 +87,5 @@ export default {
 </script>
 
 <style lang="less">
-.subject-edit {
-  .el-dialog__header {
-    background: linear-gradient(to right, #00c6f9, #1495fb);
-  }
-  .el-dialog__title {
-    color: white;
-  }
-  .el-dialog__close {
-    color: white;
-  }
-}
+
 </style>

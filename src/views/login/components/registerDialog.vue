@@ -255,12 +255,12 @@ export default {
 
 <style lang="less">
 .register-dialog {
-  .el-dialog__header {
-    background: linear-gradient(to right, #0dbfef, #1792f8);
-  }
-  .el-dialog__title {
-    color: white;
-  }
+  // .el-dialog__header {
+  //   background: linear-gradient(to right, #0dbfef, #1792f8);
+  // }
+  // .el-dialog__title {
+  //   color: white;
+  // }
   .register-box {
     height: 40.8px;
   }
