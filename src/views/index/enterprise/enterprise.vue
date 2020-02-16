@@ -50,7 +50,7 @@
           <template slot-scope="niubi">
             <el-button type="text" size="mini" @click="handleEdit(niubi.$index, niubi.row)">编辑</el-button>
             <!-- 启用，禁用 -->
-            <el-button type="text" @click="handleNotAllow(niubi.$index, niubi.row)">
+            <el-button type="text" @click="changeStatus(niubi.$index, niubi.row)">
               {{ niubi.row.status === 1 ? '禁用' : '启用' }}
             </el-button>
             <el-button size="mini" type="text" @click="handleDelete(niubi.$index, niubi.row)">删除</el-button>
@@ -73,15 +73,19 @@
     </el-card>
     <!-- 新增对话框 -->
     <enterpriseAdd ref="enterpriseAdd"></enterpriseAdd>
-  
+    <!-- 编辑对话框 -->
+    <enterpriseEdit ref='enterpriseEdit'></enterpriseEdit>
+
   </div>
 </template>
 
 <script>
 // 导入接口
-import { enterpriseList, enterpriseRemove } from '@/api/enterprise.js';
+import { enterpriseList, enterpriseRemove,enterpriseStatus } from '@/api/enterprise.js';
 // 导入新增组件
 import enterpriseAdd from './components/enterpriseAdd.vue';
+// 导入 编辑组件
+import enterpriseEdit from './components/enterpriseEdit.vue';
 export default {
   name: 'enterprise',
   data() {
@@ -131,13 +135,32 @@ export default {
   },
   // 注册组件
   components: {
-    enterpriseAdd
+    enterpriseAdd,
+    enterpriseEdit
   },
   created() {
     // 获取数据
     this.getData();
   },
   methods: {
+    // 进入编辑状态
+    handleEdit(index,row){
+      // 弹出编辑框
+      this.$refs.enterpriseEdit.dialogFormVisible=true
+      // 设置数据 新的副本
+      this.$refs.enterpriseEdit.form = JSON.parse(JSON.stringify(row));
+    },
+    // 状态的切换
+    changeStatus(index,row){
+      enterpriseStatus({
+        id:row.id
+      }).then(res=>{
+        if(res.code===200){
+          this.$message.success('状态切换成功');
+          this.getData()
+        }
+      })
+    },
     // 删除数据
     handleDelete(index, row) {
       // window.console.log(index,row)
@@ -168,7 +191,6 @@ export default {
           });
         })
         .catch(() => {});
-
     },
     // 页码改变
     currentChange(newIndex) {
