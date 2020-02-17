@@ -150,28 +150,13 @@ export default {
   methods: {
     // 进入新增状态
     showAdd() {
-      // 使用公共的对话框
-      this.$refs.enterpriseDialog.dialogFormVisible = true;
-      // 为 对话框 组件 设置nextTick
-      this.$refs.enterpriseDialog.$nextTick(() => {
-        // 修改公共对话框的 标记字段  改为false  新增状态
-        this.$refs.enterpriseDialog.isEdit = false;
-        // 清空表单中的数据
-        this.$refs.enterpriseDialog.$refs.enterpriseDialog.resetFields();
-      });
+      // 不传递数据 是新增
+      this.$refs.enterpriseDialog.show();
     },
     // 进入编辑状态
     handleEdit(index, row) {
       // 弹出编辑框
-      // 使用公共的对话框
-      this.$refs.enterpriseDialog.dialogFormVisible = true;
-      // 为对话框组件 注册 nextTick
-      this.$refs.enterpriseDialog.$nextTick(() => {
-        // 修改公共对话框的 标记字段
-        this.$refs.enterpriseDialog.isEdit = true;
-        // 设置数据 新的副本
-        this.$refs.enterpriseDialog.form = JSON.parse(JSON.stringify(row));
-      });
+      this.$refs.enterpriseDialog.show(JSON.parse(JSON.stringify(row)));
     },
     // 状态的切换
     changeStatus(index, row) {
