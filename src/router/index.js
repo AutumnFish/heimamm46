@@ -173,6 +173,8 @@ router.beforeEach((to, from, next) => {
             }
             // 获取当前用户的角色
             const role = res.data.data.role;
+            // 调用仓库方法 保存起来
+            store.commit('changeRole',role)
             // 判断是否有访问的权限
             if (to.meta.rules.includes(role)) {
               // 有 放走

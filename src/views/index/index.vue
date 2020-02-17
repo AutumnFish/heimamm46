@@ -18,24 +18,24 @@
       <el-aside width="auto" class="my-aside">
         <!-- 导航菜单 -->
         <el-menu router :collapse="isCollapse" :default-active="$route.path" class="el-menu-vertical-demo">
-          <el-menu-item index="/index/chart">
+          <el-menu-item v-if="['管理员', '老师', '学生'].includes($store.state.role)" index="/index/chart">
             <!-- 图标 -->
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
           </el-menu-item>
-          <el-menu-item index="/index/user">
+          <el-menu-item v-if="['管理员'].includes($store.state.role)" index="/index/user">
             <i class="el-icon-user"></i>
             <span slot="title">用户列表</span>
           </el-menu-item>
-          <el-menu-item index="/index/question">
+          <el-menu-item v-if="['管理员', '老师'].includes($store.state.role)" index="/index/question">
             <i class="el-icon-edit-outline"></i>
             <span slot="title">题库列表</span>
           </el-menu-item>
-          <el-menu-item index="/index/enterprise">
+          <el-menu-item v-if="['管理员', '老师'].includes($store.state.role)" index="/index/enterprise">
             <i class="el-icon-office-building"></i>
             <span slot="title">企业列表</span>
           </el-menu-item>
-          <el-menu-item index="/index/subject">
+          <el-menu-item v-if="['管理员', '老师', '学生'].includes($store.state.role)" index="/index/subject">
             <i class="el-icon-notebook-2"></i>
             <span slot="title">学科列表</span>
           </el-menu-item>
@@ -51,7 +51,7 @@
 
 <script>
 // 导入接口
-import {  logout } from '@/api/index.js';
+import { logout } from '@/api/index.js';
 // 导入 token函数
 import { removeToken } from '@/utils/token.js';
 export default {
@@ -106,10 +106,10 @@ export default {
             if (res.data.code === 200) {
               // 移除token
               removeToken();
-              // 移除 Vuex中的 头像 
-              this.$store.commit('changeIcon','')
+              // 移除 Vuex中的 头像
+              this.$store.commit('changeIcon', '');
               // 移除 Vuex中的 名字
-              this.$store.commit('changeName','')
+              this.$store.commit('changeName', '');
               // 去登录页
               this.$router.push('/login');
             }

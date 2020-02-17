@@ -10,7 +10,9 @@ const store = new Vuex.Store({
         // 用户头像
         userIcon:"",
         // 用户的名字
-        username:""
+        username:"",
+        // 用户的角色
+        role:""
     },
     // s 英文中的复数
     mutations:{
@@ -23,6 +25,10 @@ const store = new Vuex.Store({
         changeName(state,newName){
             // window.console.log(newName)
             state.username = newName
+        },
+        // 修改角色
+        changeRole(state,newRole){
+            state.role = newRole
         }
     }
 })
