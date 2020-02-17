@@ -18,29 +18,15 @@
       <el-aside width="auto" class="my-aside">
         <!-- 导航菜单 -->
         <el-menu router :collapse="isCollapse" :default-active="$route.path" class="el-menu-vertical-demo">
-          <el-menu-item v-if="['管理员', '老师', '学生'].includes($store.state.role)" index="/index/chart">
-            <!-- 图标 -->
-            <i class="el-icon-pie-chart"></i>
-            <span slot="title">数据概览</span>
-          </el-menu-item>
-          <el-menu-item v-if="['管理员'].includes($store.state.role)" index="/index/user">
-            <i class="el-icon-user"></i>
-            <span slot="title">用户列表</span>
-          </el-menu-item>
-          <el-menu-item v-if="['管理员', '老师'].includes($store.state.role)" index="/index/question">
-            <i class="el-icon-edit-outline"></i>
-            <span slot="title">题库列表</span>
-          </el-menu-item>
-          <el-menu-item v-if="['管理员', '老师'].includes($store.state.role)" index="/index/enterprise">
-            <i class="el-icon-office-building"></i>
-            <span slot="title">企业列表</span>
-          </el-menu-item>
-          <el-menu-item v-if="['管理员', '老师', '学生'].includes($store.state.role)" index="/index/subject">
-            <i class="el-icon-notebook-2"></i>
-            <span slot="title">学科列表</span>
-          </el-menu-item>
-        </el-menu></el-aside
-      >
+          <template v-for="(item, index) in navRoutes">
+            <el-menu-item :key="index" :index="item.meta.fullPath" v-if="item.meta.rules.includes($store.state.role)">
+              <!-- 图标 -->
+              <i :class="item.meta.icon"></i>
+              <span slot="title">{{ item.meta.title }}</span>
+            </el-menu-item>
+          </template>
+        </el-menu>
+      </el-aside>
       <el-main class="my-main">
         <!-- 路由出口 -->
         <router-view></router-view>
@@ -54,6 +40,8 @@
 import { logout } from '@/api/index.js';
 // 导入 token函数
 import { removeToken } from '@/utils/token.js';
+// 导入路由数组
+import navRoutes from '@/router/childrenRoutes.js';
 export default {
   name: 'index',
   data() {
@@ -63,7 +51,9 @@ export default {
       // 用户头像
       // userIcon: '',
       // 是否折叠
-      isCollapse: false
+      isCollapse: false,
+      // 保存到data中 方便一会循环
+      navRoutes: navRoutes
     };
   },
   // 生命周期钩子

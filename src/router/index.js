@@ -28,16 +28,8 @@ import login from '../views/login/login.vue';
 // 导入 组件 index
 import index from '../views/index/index.vue';
 
-// 导入组件 嵌套路由 数据 chart
-import chart from '@/views/index/chart/chart.vue';
-// 导入组件 嵌套路由 用户 user
-import user from '@/views/index/user/user.vue';
-// 导入组件 嵌套路由 题库 question
-import question from '@/views/index/question/question.vue';
-// 导入组件 嵌套路由 企业 enterprise
-import enterprise from '@/views/index/enterprise/enterprise.vue';
-// 导入组件 嵌套路由 学科 subject
-import subject from '@/views/index/subject/subject.vue';
+// 导入嵌套路由
+import children from './childrenRoutes.js';
 
 // 创建路由对象
 const router = new VueRouter({
@@ -71,58 +63,7 @@ const router = new VueRouter({
         rules: ['管理员', '老师', '学生']
       },
       // 嵌套路由
-      children: [
-        {
-          // 路径不需要写 /  被解析为 /index/chart
-          path: 'chart',
-          component: chart,
-          meta: {
-            title: '数据概览',
-            // 允许访问的角色
-            rules: ['管理员', '老师', '学生']
-          }
-        },
-        {
-          // 路径不需要写 /  会被解析为 /index/user
-          path: 'user',
-          component: user,
-          meta: {
-            title: '用户列表',
-            // 允许访问的角色
-            rules: ['管理员']
-          }
-        },
-        {
-          // 路径不需要写 /  会被解析为 /index/question
-          path: 'question',
-          component: question,
-          meta: {
-            title: '题库列表',
-            // 允许访问的角色
-            rules: ['管理员', '老师']
-          }
-        },
-        {
-          // 路径不需要写 /  会被解析为 /index/enterprise
-          path: 'enterprise',
-          component: enterprise,
-          meta: {
-            title: '企业列表',
-            // 允许访问的角色
-            rules: ['管理员', '老师']
-          }
-        },
-        {
-          // 路径不需要写 /  会被解析为 /index/subject
-          path: 'subject',
-          component: subject,
-          meta: {
-            title: '学科列表',
-            // 允许访问的角色
-            rules: ['管理员', '老师', '学生']
-          }
-        }
-      ]
+      children // children:children
     }
   ]
 });
@@ -174,7 +115,7 @@ router.beforeEach((to, from, next) => {
             // 获取当前用户的角色
             const role = res.data.data.role;
             // 调用仓库方法 保存起来
-            store.commit('changeRole',role)
+            store.commit('changeRole', role);
             // 判断是否有访问的权限
             if (to.meta.rules.includes(role)) {
               // 有 放走
