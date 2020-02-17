@@ -18,7 +18,7 @@ import { info } from '@/api/index.js';
 import { Message } from 'element-ui';
 
 // 导入仓库
-import store from '@/store/index.js'
+import store from '@/store/index.js';
 
 // 注册一下 use
 Vue.use(VueRouter);
@@ -140,15 +140,29 @@ router.beforeEach((to, from, next) => {
           NProgress.done();
           next('/login');
         } else if (res.data.code === 200) {
-          // 处理用户的信息 用户的名字
-          const username = res.data.data.username
-          // 处理用户的信息 用户的头像
-          const userIcon = process.env.VUE_APP_URL+"/"+res.data.data.avatar
-          // 调用仓库的方法
-          store.commit("changeIcon",userIcon);
-          store.commit("changeName",username);
-          // 正确的
-          next();
+          // 用户状态判断:
+          // info接口抽取的时候 没有 注册拦截器 获取简化data
+          if (res.data.data.status === 1) {
+            // 启用
+            // 处理用户的信息 用户的名字
+            const username = res.data.data.username;
+            // 处理用户的信息 用户的头像
+            const userIcon = process.env.VUE_APP_URL + '/' + res.data.data.avatar;
+            // 调用仓库的方法
+            store.commit('changeIcon', userIcon);
+            store.commit('changeName', username);
+            // 可以正常访问时，才提示欢迎
+            Message.success("欢迎你！！")
+            // 正确的
+            next();
+          } else {
+            // 禁用状态
+            // 提示用户
+            // 打回登录页
+            Message.warning('当前出于禁用状态，请等待管理员审核');
+            NProgress.done();
+            next('/login');
+          }
         }
       });
     }

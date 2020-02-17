@@ -133,7 +133,7 @@ export default {
             // window.console.log(res)
             // 正确
             if (res.data.code === 200) {
-              this.$message.success('欢迎你');
+              // this.$message.success('欢迎你');
               // 服务器返回了token
               // token 保存到 哪里 localStorage（一直都在）  SessionStorage(刷新消失)
               // window.localStorage.setItem('heimammToken', res.data.data.token);

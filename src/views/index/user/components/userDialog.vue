@@ -19,8 +19,8 @@
       </el-form-item>
       <el-form-item label="状态" prop="status" :label-width="formLabelWidth">
         <el-select class="normal" v-model="form.status" placeholder="请选择状态">
-          <el-option label="启用" value="1"></el-option>
-          <el-option label="禁用" value="0"></el-option>
+          <el-option label="启用" :value="1"></el-option>
+          <el-option label="禁用" :value="0"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item prop="remark" label="用户备注" :label-width="formLabelWidth">
@@ -56,7 +56,7 @@ export default {
         // 电话
         phone: '',
         // 角色
-        role_id: 2,
+        role_id: '',
         // 状态
         status: '',
         // 用户备注
@@ -101,14 +101,12 @@ export default {
             // 电话
             phone: '',
             // 角色
-            role_id: 2,
+            role_id: '',
             // 状态
             status: '',
             // 用户备注
             remark: ''
           };
-          // 校验角色字段
-          this.$refs.userDialog.validateField('role_id');
         });
       } else {
         // 传递了数据 编辑逻辑
@@ -118,8 +116,6 @@ export default {
           this.isEdit = true;
           // 设置数据 新的副本
           this.form = editData;
-          // 校验角色字段
-          this.$refs.userDialog.validateField('role_id');
         });
       }
     },
