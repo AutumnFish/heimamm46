@@ -55,7 +55,9 @@ const router = new VueRouter({
       // path:"/",
       component: login,
       meta: {
-        title: '登录'
+        title: '登录',
+        // 允许访问的角色
+        rules: ['管理员', '老师', '学生']
       }
     },
     // 首页
@@ -64,7 +66,9 @@ const router = new VueRouter({
       // path:"/",
       component: index,
       meta: {
-        title: '首页'
+        title: '首页',
+        // 允许访问的角色
+        rules: ['管理员', '老师', '学生']
       },
       // 嵌套路由
       children: [
@@ -73,7 +77,9 @@ const router = new VueRouter({
           path: 'chart',
           component: chart,
           meta: {
-            title: '数据概览'
+            title: '数据概览',
+            // 允许访问的角色
+            rules: ['管理员', '老师', '学生']
           }
         },
         {
@@ -81,7 +87,9 @@ const router = new VueRouter({
           path: 'user',
           component: user,
           meta: {
-            title: '用户列表'
+            title: '用户列表',
+            // 允许访问的角色
+            rules: ['管理员']
           }
         },
         {
@@ -89,7 +97,9 @@ const router = new VueRouter({
           path: 'question',
           component: question,
           meta: {
-            title: '题库列表'
+            title: '题库列表',
+            // 允许访问的角色
+            rules: ['管理员', '老师']
           }
         },
         {
@@ -97,7 +107,9 @@ const router = new VueRouter({
           path: 'enterprise',
           component: enterprise,
           meta: {
-            title: '企业列表'
+            title: '企业列表',
+            // 允许访问的角色
+            rules: ['管理员', '老师']
           }
         },
         {
@@ -105,7 +117,9 @@ const router = new VueRouter({
           path: 'subject',
           component: subject,
           meta: {
-            title: '学科列表'
+            title: '学科列表',
+            // 允许访问的角色
+            rules: ['管理员', '老师', '学生']
           }
         }
       ]
@@ -132,7 +146,7 @@ router.beforeEach((to, from, next) => {
       // token 存在
       // 对错判断
       info().then(res => {
-        // window.console.log(res);
+        window.console.log(res);
         if (res.data.code === 206) {
           // token有问题
           removeToken();
@@ -151,10 +165,24 @@ router.beforeEach((to, from, next) => {
             // 调用仓库的方法
             store.commit('changeIcon', userIcon);
             store.commit('changeName', username);
-            // 可以正常访问时，才提示欢迎
-            Message.success("欢迎你！！")
-            // 正确的
-            next();
+            // window.console.log(from)
+            // 如果是从 不需要登陆的页面过来的，弹框
+            if (whitePaths.includes(from.path)) {
+              // 可以正常访问时，才提示欢迎
+              Message.success('欢迎你！！');
+            }
+            // 获取当前用户的角色
+            const role = res.data.data.role;
+            // 判断是否有访问的权限
+            if (to.meta.rules.includes(role)) {
+              // 有 放走
+              next();
+            } else {
+              // 没有 提示用户
+              Message.warning('没有访问权限，无法访问');
+              // 关闭进度条
+              NProgress.done();
+            }
           } else {
             // 禁用状态
             // 提示用户
