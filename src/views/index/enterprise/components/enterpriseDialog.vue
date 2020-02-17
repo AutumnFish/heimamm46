@@ -72,6 +72,8 @@ export default {
         this.$nextTick(() => {
           // 修改公共对话框的 标记字段  改为false  新增状态
           this.isEdit = false;
+          // 删除 id字段 
+          delete this.form.id
           // 清空表单中的数据
           this.$refs.enterpriseDialog.resetFields();
         });
