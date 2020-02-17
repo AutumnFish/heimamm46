@@ -49,7 +49,7 @@ const router = new VueRouter({
       meta: {
         title: '登录',
         // 允许访问的角色
-        rules: ['管理员', '老师', '学生']
+        rules: ['超级管理员','管理员', '老师', '学生']
       }
     },
     // 首页
@@ -60,7 +60,7 @@ const router = new VueRouter({
       meta: {
         title: '首页',
         // 允许访问的角色
-        rules: ['管理员', '老师', '学生']
+        rules: ['超级管理员','管理员', '老师', '学生']
       },
       // 嵌套路由
       children // children:children

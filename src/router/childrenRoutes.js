@@ -17,7 +17,7 @@ export default [
     meta: {
       title: '数据概览',
       // 允许访问的角色
-      rules: ['管理员', '老师', '学生'],
+      rules: ['超级管理员','管理员', '老师', '学生'],
       // 图标
       icon: 'el-icon-pie-chart',
       // 完全地址
@@ -31,7 +31,7 @@ export default [
     meta: {
       title: '用户列表',
       // 允许访问的角色
-      rules: ['管理员'],
+      rules: ['超级管理员','管理员'],
       // 图标
       icon: 'el-icon-user',
       // 完全地址
@@ -45,7 +45,7 @@ export default [
     meta: {
       title: '题库列表',
       // 允许访问的角色
-      rules: ['管理员', '老师'],
+      rules: ['超级管理员','管理员', '老师'],
       // 图标
       icon: 'el-icon-edit-outline',
       // 完全地址
@@ -59,7 +59,7 @@ export default [
     meta: {
       title: '企业列表',
       // 允许访问的角色
-      rules: ['管理员', '老师'],
+      rules: ['超级管理员','管理员', '老师'],
       // 图标
       icon: 'el-icon-office-building',
       // 完全地址
@@ -73,7 +73,7 @@ export default [
     meta: {
       title: '学科列表',
       // 允许访问的角色
-      rules: ['管理员', '老师', '学生'],
+      rules: ['超级管理员','管理员', '老师', '学生'],
       // 图标
       icon: 'el-icon-notebook-2',
       // 完全地址
