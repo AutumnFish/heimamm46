@@ -72,10 +72,21 @@ export default {
         this.$nextTick(() => {
           // 修改公共对话框的 标记字段  改为false  新增状态
           this.isEdit = false;
-          // 删除 id字段 
-          delete this.form.id
+          // 直接设置一个新的对象
+          this.form = {
+            // 企业编号
+            eid: '',
+            // 企业名称
+            name: '',
+            // 简称
+            short_name: '',
+            // 简介
+            intro: '',
+            // 备注
+            remark: ''
+          };
           // 清空表单中的数据
-          this.$refs.enterpriseDialog.resetFields();
+          // this.$refs.enterpriseDialog.resetFields();
         });
       } else {
         // 传递了数据 编辑逻辑
