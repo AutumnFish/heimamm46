@@ -60,6 +60,7 @@
     <el-card class="bottom-card">
       <!-- table -->
       <el-table :data="tableData" border style="width: 100%">
+        <!-- type=index 可以实现索引 -->
         <el-table-column type="index" label="序号" width="180"> </el-table-column>
         <el-table-column prop="date" label="题目"> </el-table-column>
         <el-table-column prop="name" label="学科.阶段"> </el-table-column>
@@ -78,8 +79,8 @@
       </el-table>
       <!-- 分页器 -->
       <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
+        @size-change="sizeChange"
+        @current-change="currentChange"
         background
         :current-page="index"
         :page-sizes="[2, 4, 6, 8]"
@@ -125,11 +126,11 @@ export default {
   },
   methods: {
     // 页容量改变
-    handleSizeChange(val) {
+    sizeChange(val) {
       window.console.log(`每页 ${val} 条`);
     },
     // 页面改变
-    handleCurrentChange(val) {
+    currentChange(val) {
       window.console.log(`当前页: ${val}`);
     }
   },
