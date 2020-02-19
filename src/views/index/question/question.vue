@@ -61,13 +61,13 @@
       <!-- table -->
       <el-table :data="tableData" border style="width: 100%">
         <!-- type=index 可以实现索引 -->
-        <el-table-column type="index" label="序号" width="180"> </el-table-column>
-        <el-table-column prop="title" label="题目">
+        <el-table-column type="index" label="序号" > </el-table-column>
+        <el-table-column  label="题目" width="200">
           <template slot-scope="scope" >
             <span v-html="scope.row.title"></span>
           </template>
         </el-table-column>
-        <el-table-column prop="subject_name" label="学科.阶段">
+        <el-table-column label="学科.阶段">
           <template slot-scope="scope">
               {{ scope.row.subject_name }}
               .
@@ -75,14 +75,14 @@
               {{ {1:'初级',2:'中级',3:'高级'}[scope.row.step] }}
           </template>
         </el-table-column>
-        <el-table-column prop="address" label="题型"> 
+        <el-table-column label="题型"> 
           <template slot-scope="scope"> 
               {{ {1:'单选',2:'多选',3:'简答'}[scope.row.type] }}
           </template>
         </el-table-column>
         <el-table-column prop="enterprise_name" label="企业"> </el-table-column>
         <el-table-column prop="username" label="创建者"> </el-table-column>
-        <el-table-column prop="status" label="状态">
+        <el-table-column label="状态">
           <template slot-scope="scope">
               {{ scope.row.status===1?'启用':'禁用' }}
           </template>
