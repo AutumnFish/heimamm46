@@ -62,17 +62,38 @@
       <el-table :data="tableData" border style="width: 100%">
         <!-- type=index 可以实现索引 -->
         <el-table-column type="index" label="序号" width="180"> </el-table-column>
-        <el-table-column prop="date" label="题目"> </el-table-column>
-        <el-table-column prop="name" label="学科.阶段"> </el-table-column>
-        <el-table-column prop="address" label="题型"> </el-table-column>
-        <el-table-column prop="address" label="企业"> </el-table-column>
-        <el-table-column prop="address" label="创建者"> </el-table-column>
-        <el-table-column prop="address" label="状态"> </el-table-column>
-        <el-table-column prop="address" label="访问量"> </el-table-column>
-        <el-table-column prop="address" label="操作">
-          <template>
+        <el-table-column prop="title" label="题目">
+          <template slot-scope="scope" >
+            <span v-html="scope.row.title"></span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="subject_name" label="学科.阶段">
+          <template slot-scope="scope">
+              {{ scope.row.subject_name }}
+              .
+              <!-- 对象.属性  对象[1] -->
+              {{ {1:'初级',2:'中级',3:'高级'}[scope.row.step] }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="address" label="题型"> 
+          <template slot-scope="scope"> 
+              {{ {1:'单选',2:'多选',3:'简答'}[scope.row.type] }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="enterprise_name" label="企业"> </el-table-column>
+        <el-table-column prop="username" label="创建者"> </el-table-column>
+        <el-table-column prop="status" label="状态">
+          <template slot-scope="scope">
+              {{ scope.row.status===1?'启用':'禁用' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="reads" label="访问量"> </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
             <el-button type="text">编辑</el-button>
-            <el-button type="text">启用</el-button>
+            <el-button type="text">
+              {{scope.row.status===1?'禁用':'启用'}}
+            </el-button>
             <el-button type="text">删除</el-button>
           </template>
         </el-table-column>
@@ -98,6 +119,8 @@
 import { subjectList } from '@/api/subject.js';
 // 导入企业 接口
 import { enterpriseList } from '@/api/enterprise.js';
+// 导入题库列表 接口
+import {questionList} from '@/api/question.js'
 export default {
   name: 'question',
   data() {
@@ -121,7 +144,9 @@ export default {
       // 页码
       index: 1,
       // 总条数
-      total: 0
+      total: 0,
+      // 表格的数据
+      tableData:[]
     };
   },
   methods: {
@@ -146,6 +171,14 @@ export default {
       // window.console.log(res)
       this.enterpriseList = res.data.items;
     });
+    // 获取题库数据 
+    questionList().then(res=>{
+      // window.console.log(res)
+      // 赋值给table
+      this.tableData = res.data.items;
+      // 总条数
+      this.total = res.data.pagination.total;
+    })
   }
 };
 </script>
