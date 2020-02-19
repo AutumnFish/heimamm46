@@ -5,7 +5,7 @@
         <el-form-item label="学科">
           <el-select v-model="formInline.subject" placeholder="请选择学科">
             <el-option label="所有学科" value=""></el-option>
-            <el-option v-for="(item,index) in subjectList" :key="index" :label="item.name" :value="item.id"></el-option>
+            <el-option v-for="(item, index) in subjectList" :key="index" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="阶段">
@@ -15,9 +15,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="企业">
-          <el-select v-model="formInline.region" placeholder="请选择企业">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+          <el-select v-model="formInline.enterprise" placeholder="请选择企业">
+            <el-option label="所有企业" value=""></el-option>
+            <el-option v-for="(item,index) in enterpriseList" :key="index" :label="item.name"
+             :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="题型">
@@ -62,6 +63,8 @@
 <script>
 // 导入学科 接口
 import { subjectList } from '@/api/subject.js';
+// 导入企业 接口
+import { enterpriseList } from '@/api/enterprise.js';
 export default {
   name: 'question',
   data() {
@@ -69,21 +72,31 @@ export default {
       formInline: {
         user: '',
         region: '',
-        value1:'',
+        value1: '',
         // 学科id
-        subject:""
+        subject: '',
+        // 企业id
+        enterprise: ''
       },
       // 学科数据
-      subjectList:[]
+      subjectList: [],
+      // 企业数据
+      enterpriseList: []
     };
   },
   // 获取数据
   created() {
-    subjectList().then(res=>{
+    // 获取学科数据
+    subjectList().then(res => {
       // window.console.log(res)
-      this.subjectList = res.data.items
-    })
-  },
+      this.subjectList = res.data.items;
+    });
+    // 获取企业数据
+    enterpriseList().then(res => {
+      // window.console.log(res)
+      this.enterpriseList = res.data.items;
+    });
+  }
 };
 </script>
 
@@ -106,7 +119,7 @@ export default {
     padding-right: 30px;
   }
   // 日期选择器的宽度
-  .el-date-editor.el-input{
+  .el-date-editor.el-input {
     width: 150px;
   }
 }
