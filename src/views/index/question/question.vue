@@ -43,7 +43,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="日期">
-          <el-input v-model="formInline.user" placeholder="选择日期"></el-input>
+          <el-date-picker v-model="formInline.value1" type="date" placeholder="选择日期"> </el-date-picker>
         </el-form-item>
         <br />
         <el-form-item class="title-item" label="标题">
@@ -66,7 +66,8 @@ export default {
     return {
       formInline: {
         user: '',
-        region: ''
+        region: '',
+        value1:''
       }
     };
   }
@@ -81,7 +82,7 @@ export default {
     width: 150px;
   }
   // 标题的盒子
-   .el-form--inline .el-form-item.title-item .el-form-item__content{
+  .el-form--inline .el-form-item.title-item .el-form-item__content {
     width: 398px;
   }
   .top-card .el-card__body {
@@ -90,6 +91,10 @@ export default {
   .el-form-item__label {
     padding-left: 30px;
     padding-right: 30px;
+  }
+  // 日期选择器的宽度
+  .el-date-editor.el-input{
+    width: 150px;
   }
 }
 </style>
