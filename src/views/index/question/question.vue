@@ -3,9 +3,9 @@
     <el-card class="top-card">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="学科">
-          <el-select v-model="formInline.region" placeholder="请选择学科">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+          <el-select v-model="formInline.subject" placeholder="请选择学科">
+            <el-option label="所有学科" value=""></el-option>
+            <el-option v-for="(item,index) in subjectList" :key="index" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="阶段">
@@ -60,6 +60,8 @@
 </template>
 
 <script>
+// 导入学科 接口
+import { subjectList } from '@/api/subject.js';
 export default {
   name: 'question',
   data() {
@@ -67,10 +69,21 @@ export default {
       formInline: {
         user: '',
         region: '',
-        value1:''
-      }
+        value1:'',
+        // 学科id
+        subject:""
+      },
+      // 学科数据
+      subjectList:[]
     };
-  }
+  },
+  // 获取数据
+  created() {
+    subjectList().then(res=>{
+      // window.console.log(res)
+      this.subjectList = res.data.items
+    })
+  },
 };
 </script>
 
