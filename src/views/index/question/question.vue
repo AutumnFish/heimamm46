@@ -64,7 +64,6 @@
         <el-table-column prop="date" label="题目"> </el-table-column>
         <el-table-column prop="name" label="学科.阶段"> </el-table-column>
         <el-table-column prop="address" label="题型"> </el-table-column>
-        <el-table-column prop="address" label="题型"> </el-table-column>
         <el-table-column prop="address" label="企业"> </el-table-column>
         <el-table-column prop="address" label="创建者"> </el-table-column>
         <el-table-column prop="address" label="状态"> </el-table-column>
