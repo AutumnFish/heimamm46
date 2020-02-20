@@ -39,6 +39,18 @@
       </el-form-item>
       <!-- 分割线 -->
       <el-divider></el-divider>
+      <!-- 富文本编辑器1 标题 -->
+      <el-form-item label="试题标题" :label-width="formLabelWidth">
+        <!-- <myEditor v-bind:value="form.title" @input="v => (form.title = v)" /> -->
+        <myEditor v-model="form.title" />
+      </el-form-item>
+      <!-- 分割线 -->
+      <el-divider></el-divider>
+      <!-- 富文本编辑器1 标题 -->
+      <el-form-item label="答案解析" :label-width="formLabelWidth">
+        <!-- <myEditor v-bind:value="form.answer_analyze" @input="v => (form.title = v)" /> -->
+        <myEditor v-model="form.answer_analyze" />
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -52,10 +64,13 @@
 <script>
 // 导入抽取的省市区组件
 import chinaArea from './chinaArea.vue';
+// 导入抽取的富文本编辑器
+import myEditor from './myEditor.vue';
 export default {
   // 注册组件
   components: {
-    chinaArea
+    chinaArea,
+    myEditor
   },
   data() {
     return {
@@ -71,7 +86,10 @@ export default {
         city: [],
         // 题型 和难度
         type: 1,
-        difficulty: 1
+        difficulty: 1,
+        // 富文本编辑器的数据 标题 答案解析(answer_analyze)
+        title: '我是一个标题',
+        answer_analyze: '默认的答案解析'
       },
 
       formLabelWidth: '120px'
