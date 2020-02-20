@@ -14,6 +14,10 @@
       <el-form-item label="企业" :label-width="formLabelWidth">
         <enterpriseSel v-model="form.enterprise" />
       </el-form-item>
+      <el-form-item label="城市" :label-width="formLabelWidth">
+        <!-- <chinaArea v-bind:value="form.city" @input="v => (form.city = v)" /> -->
+        <chinaArea v-model="form.city" />
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -23,14 +27,12 @@
 </template>
 
 <script>
-// 导入组件
-import enterpriseSel from './enterpriseSel.vue';
-import subjectSel from './subjectSel.vue';
+// 导入抽取的省市区组件
+import chinaArea from './chinaArea.vue';
 export default {
   // 注册组件
   components: {
-    enterpriseSel,
-    subjectSel
+    chinaArea
   },
   data() {
     return {
@@ -41,8 +43,11 @@ export default {
         step: '',
         // 学科和企业
         subject: '',
-        enterprise: ''
+        enterprise: '',
+        // 省市区
+        city: []
       },
+
       formLabelWidth: '120px'
     };
   }
@@ -57,6 +62,10 @@ export default {
   }
   // 选择框宽度
   .el-select {
+    width: 364px;
+  }
+  // 级联选择器的宽度
+  .el-cascader {
     width: 364px;
   }
 }

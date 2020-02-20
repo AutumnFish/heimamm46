@@ -19,8 +19,6 @@ export default {
     };
   },
   created() {
-    window.console.log(this.value);
-
     // 获取学科数据
     subjectList().then(res => {
       this.subjectList = res.data.items;

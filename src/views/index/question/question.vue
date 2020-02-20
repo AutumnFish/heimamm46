@@ -3,8 +3,11 @@
     <el-card class="top-card">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="学科">
-          <!-- <subjectSel v-bind:value="formInline.subject" @input="v => (formInline.subject = v)" /> -->
-          <subjectSel v-model="formInline.subject" />
+          <subjectSel 
+          v-bind:value="formInline.subject" 
+          @input="v => (formInline.subject = v)"
+           />
+          <!-- <subjectSel v-model="formInline.subject" /> -->
         </el-form-item>
         <el-form-item label="阶段">
           <el-select v-model="formInline.region" placeholder="请选择阶段">
@@ -48,7 +51,7 @@
         <el-form-item>
           <el-button type="primary">搜索</el-button>
           <el-button>清除</el-button>
-          <el-button type="primary" @click="$refs.questionAdd.dialogFormVisible=true" icon="el-icon-plus">新增试题</el-button>
+          <el-button type="primary" @click="$refs.questionAdd.dialogFormVisible = true" icon="el-icon-plus">新增试题</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -116,9 +119,9 @@
 // 导入题库列表 接口
 import { questionList } from '@/api/question.js';
 // 导入 学科下拉框
-import subjectSel from './components/subjectSel.vue';
+// import subjectSel from './components/subjectSel.vue';
 // 导入 企业下拉框组件
-import enterpriseSel from './components/enterpriseSel.vue';
+// import enterpriseSel from './components/enterpriseSel.vue';
 // 导入 新增对话框
 import questionAdd from './components/questionAdd.vue';
 export default {
@@ -148,8 +151,8 @@ export default {
   },
   // 组件注册
   components: {
-    subjectSel,
-    enterpriseSel,
+    // subjectSel,
+    // enterpriseSel,
     questionAdd
   },
   methods: {
