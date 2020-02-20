@@ -14,7 +14,7 @@
         </el-form-item>
         <el-form-item label="企业">
           <!-- <enterpriseSel v-bind:value="formInline.enterprise" @input="v => (formInline.enterprise = v)" /> -->
-          <enterpriseSel  v-model="formInline.enterprise" />
+          <enterpriseSel v-model="formInline.enterprise" />
         </el-form-item>
         <el-form-item label="题型">
           <el-select v-model="formInline.region" placeholder="请选择题型">
@@ -48,7 +48,7 @@
         <el-form-item>
           <el-button type="primary">搜索</el-button>
           <el-button>清除</el-button>
-          <el-button type="primary" icon="el-icon-plus">新增试题</el-button>
+          <el-button type="primary" @click="$refs.questionAdd.dialogFormVisible=true" icon="el-icon-plus">新增试题</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -107,6 +107,8 @@
       >
       </el-pagination>
     </el-card>
+    <!-- 新增对话框 -->
+    <questionAdd ref="questionAdd"></questionAdd>
   </div>
 </template>
 
@@ -117,6 +119,8 @@ import { questionList } from '@/api/question.js';
 import subjectSel from './components/subjectSel.vue';
 // 导入 企业下拉框组件
 import enterpriseSel from './components/enterpriseSel.vue';
+// 导入 新增对话框
+import questionAdd from './components/questionAdd.vue';
 export default {
   name: 'question',
   data() {
@@ -145,7 +149,8 @@ export default {
   // 组件注册
   components: {
     subjectSel,
-    enterpriseSel
+    enterpriseSel,
+    questionAdd
   },
   methods: {
     // 页容量改变
