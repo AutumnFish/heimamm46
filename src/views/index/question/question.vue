@@ -3,6 +3,7 @@
     <el-card class="top-card">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="学科">
+          <!-- <subjectSel v-bind:value="formInline.subject" @input="v => (formInline.subject = v)" /> -->
           <subjectSel v-model="formInline.subject" />
         </el-form-item>
         <el-form-item label="阶段">
@@ -12,10 +13,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="企业">
-          <el-select v-model="formInline.enterprise" placeholder="请选择企业">
-            <el-option label="所有企业" value=""></el-option>
-            <el-option v-for="(item, index) in enterpriseList" :key="index" :label="item.name" :value="item.id"></el-option>
-          </el-select>
+          <!-- <enterpriseSel v-bind:value="formInline.enterprise" @input="v => (formInline.enterprise = v)" /> -->
+          <enterpriseSel  v-model="formInline.enterprise" />
         </el-form-item>
         <el-form-item label="题型">
           <el-select v-model="formInline.region" placeholder="请选择题型">
@@ -112,12 +111,12 @@
 </template>
 
 <script>
-// 导入企业 接口
-import { enterpriseList } from '@/api/enterprise.js';
 // 导入题库列表 接口
 import { questionList } from '@/api/question.js';
 // 导入 学科下拉框
 import subjectSel from './components/subjectSel.vue';
+// 导入 企业下拉框组件
+import enterpriseSel from './components/enterpriseSel.vue';
 export default {
   name: 'question',
   data() {
@@ -127,13 +126,11 @@ export default {
         region: '',
         value1: '',
         // 学科id
-        subject: 0,
+        subject: '',
         // 企业id
         enterprise: ''
       },
 
-      // 企业数据
-      enterpriseList: [],
       // 分页器相关
       // 页容量
       size: 2,
@@ -147,7 +144,8 @@ export default {
   },
   // 组件注册
   components: {
-    subjectSel
+    subjectSel,
+    enterpriseSel
   },
   methods: {
     // 页容量改变
@@ -161,11 +159,6 @@ export default {
   },
   // 获取数据
   created() {
-    // 获取企业数据
-    enterpriseList().then(res => {
-      // window.console.log(res)
-      this.enterpriseList = res.data.items;
-    });
     // 获取题库数据
     questionList().then(res => {
       // window.console.log(res)

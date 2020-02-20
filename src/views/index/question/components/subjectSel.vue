@@ -1,6 +1,6 @@
 <template>
   <el-select v-model="selfSubject" placeholder="请选择学科">
-    <el-option label="所有学科" :value="0"></el-option>
+    <el-option label="所有学科" value=""></el-option>
     <el-option v-for="(item, index) in subjectList" :key="index" :label="item.short_name" :value="item.id"></el-option>
   </el-select>
 </template>
@@ -9,11 +9,7 @@
 // 导入学科 接口
 import { subjectList } from '@/api/subject.js';
 export default {
-  props: {
-      value:{
-          type:Number
-      }
-  },
+  props: ['value'],
   data() {
     return {
       // 学科数据
@@ -23,17 +19,18 @@ export default {
     };
   },
   created() {
+    window.console.log(this.value);
+
     // 获取学科数据
     subjectList().then(res => {
-      // window.console.log(res)
       this.subjectList = res.data.items;
     });
   },
   // 监听数据改变
-  watch:{
-      selfSubject(){
-          this.$emit("input",this.selfSubject)
-      }
+  watch: {
+    selfSubject() {
+      this.$emit('input', this.selfSubject);
+    }
   }
 };
 </script>
