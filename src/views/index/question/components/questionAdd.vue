@@ -1,5 +1,10 @@
 <template>
-  <el-dialog class="question-add" fullscreen title="新增题库" :visible.sync="dialogFormVisible">
+  <el-dialog
+    class="question-add"
+    fullscreen
+    title="新增题库"
+    :visible.sync="dialogFormVisible"
+  >
     <el-form :model="form">
       <el-form-item label="学科" :label-width="formLabelWidth">
         <subjectSel v-model="form.subject" />
@@ -18,10 +23,28 @@
         <!-- <chinaArea v-bind:value="form.city" @input="v => (form.city = v)" /> -->
         <chinaArea v-model="form.city" />
       </el-form-item>
+      <el-form-item label="题型" :label-width="formLabelWidth">
+        <el-radio-group v-model="form.type">
+          <el-radio :label="1">单选</el-radio>
+          <el-radio :label="2">多选</el-radio>
+          <el-radio :label="3">简答</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="难度" :label-width="formLabelWidth">
+        <el-radio-group v-model="form.difficulty">
+          <el-radio :label="1">简单</el-radio>
+          <el-radio :label="2">一般</el-radio>
+          <el-radio :label="3">困难</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <!-- 分割线 -->
+      <el-divider></el-divider>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      <el-button type="primary" @click="dialogFormVisible = false"
+        >确 定</el-button
+      >
     </div>
   </el-dialog>
 </template>
@@ -45,7 +68,10 @@ export default {
         subject: '',
         enterprise: '',
         // 省市区
-        city: []
+        city: [],
+        // 题型 和难度
+        type: 1,
+        difficulty: 1
       },
 
       formLabelWidth: '120px'
