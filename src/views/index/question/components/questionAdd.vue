@@ -38,7 +38,7 @@ export default {
       // 表单的数据
       form: {
         // 阶段
-        setp: '',
+        step: '',
         // 学科和企业
         subject: '',
         enterprise: ''
