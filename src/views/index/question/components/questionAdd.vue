@@ -58,14 +58,17 @@
             v-bind:image="form.select_options[0].image"
             v-on:update:image="v => (form.select_options[0].image = v)"
           /> -->
-          <optionItem
-            :label="form.select_options[0].label"
-            :text.sync="form.select_options[0].text"
-            :image.sync="form.select_options[0].image"
-          />
-          <el-radio label="B"></el-radio>
+          <!-- <el-radio label="B"></el-radio>
           <el-radio label="C"></el-radio>
-          <el-radio label="D"></el-radio>
+          <el-radio label="D"></el-radio> -->
+
+          <optionItem
+            v-for="(item, index) in form.select_options"
+            :key="index"
+            :label="item.label"
+            :text.sync="item.text"
+            :image.sync="item.image"
+          />
         </el-radio-group>
       </el-form-item>
       <!-- 选项区域 多选 -->

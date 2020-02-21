@@ -66,6 +66,7 @@ export default {
 .option-container {
   display: flex;
   align-items: center;
+  margin-top: 10px;
   // 输入框
   .el-input {
     width: 450px;
