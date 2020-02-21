@@ -3,10 +3,11 @@
     class="question-edit"
     fullscreen
     title="编辑题库"
-    destroy-on-close
     :visible.sync="dialogFormVisible"
+    @closed="isShow = false"
+    @open="isShow = true"
   >
-    <el-form :model="form" ref="editForm" :rules="rules">
+    <el-form v-if="isShow" :model="form" ref="editForm" :rules="rules">
       <el-form-item label="学科" prop="subject" :label-width="formLabelWidth">
         <subjectSel :isQuery="false" v-model="form.subject" />
       </el-form-item>
@@ -275,7 +276,9 @@ export default {
           { required: true, message: '试题备注不能为空', trigger: 'change' }
         ]
       },
-      formLabelWidth: '130px'
+      formLabelWidth: '130px',
+      // 是否显示的布尔值 用来刷新页面
+      isShow:true
     };
   },
 
