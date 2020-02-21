@@ -36,7 +36,7 @@
 
 <script>
 // 导入接口
-import { titleData } from '@/api/data.js';
+import { titleData, statisticsData } from '@/api/data.js';
 // 导入 echarts
 import echarts from 'echarts';
 export default {
@@ -55,52 +55,56 @@ export default {
   },
   // echarts的渲染依赖于 dom加载
   mounted() {
-    const myChart = echarts.init(this.$refs.chart);
-    const option = {
-      tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b}: {c} ({d}%)'
-      },
-      legend: {
-        orient: 'vertical',
-        right: 10,
-        data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-      },
-      color: ['#429dfe', '#f86137', '#aa314d'],
-      series: [
-        {
-          name: '访问来源',
-          type: 'pie',
-          radius: ['50%', '70%'],
-          avoidLabelOverlap: false,
-          label: {
-            normal: {
-              show: false,
-              position: 'center'
-            },
-            emphasis: {
-              show: true,
-              textStyle: {
-                fontSize: '30',
-                fontWeight: 'bold'
+    statisticsData().then(res => {
+      // window.console.log(res);
+      const myChart = echarts.init(this.$refs.chart);
+      // 循环数组 ，并返回一个新的数组 新数组的每一项 是 return的值
+      let nameArr = res.data.map(v => {
+        return v.name;
+      });
+      const option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          right: 10,
+          data: nameArr
+        },
+        // 不写颜色，就会自动
+        // color: ['#429dfe', '#f86137', '#aa314d'],
+        series: [
+          {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              normal: {
+                show: false,
+                position: 'center'
+              },
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: '30',
+                  fontWeight: 'bold'
+                }
               }
-            }
-          },
-          labelLine: {
-            normal: {
-              show: false
-            }
-          },
-          data: [
-            { value: 335, name: '直接访问' },
-            { value: 310, name: '邮件营销' },
-            { value: 234, name: '联盟广告' }
-          ]
-        }
-      ]
-    };
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+            },
+            labelLine: {
+              normal: {
+                show: false
+              }
+            },
+            data: res.data
+          }
+        ]
+      };
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    });
   }
 };
 </script>
@@ -151,7 +155,7 @@ export default {
   .bottom-card {
     height: 571px;
   }
-  .chart-box{
+  .chart-box {
     height: 571px;
   }
 }
