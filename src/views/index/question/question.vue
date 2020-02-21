@@ -116,7 +116,7 @@
             <el-button type="text" @click="changeStatus(scope.row)">
               {{ scope.row.status === 1 ? '禁用' : '启用' }}
             </el-button>
-            <el-button type="text">删除</el-button>
+            <el-button @click="removeQuestion(scope.row)" type="text">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -142,7 +142,7 @@
 
 <script>
 // 导入题库列表 接口
-import { questionList,questionStatus } from '@/api/question.js';
+import { questionList,questionStatus,questionRemove } from '@/api/question.js';
 // 导入 学科下拉框
 // import subjectSel from './components/subjectSel.vue';
 // 导入 企业下拉框组件
@@ -195,6 +195,23 @@ export default {
     questionEdit
   },
   methods: {
+    // 删除试题的逻辑
+    removeQuestion(row){
+      this.$confirm('你确定要删除这条数据吗?', '友情提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        questionRemove({
+          id:row.id
+        }).then(res=>{
+          if(res.code===200){
+            this.$message.success("删除成功")
+            this.getData()
+          }
+        })
+      }).catch(() => {});
+    },
     // 切换状态
     changeStatus(row){
       questionStatus({
