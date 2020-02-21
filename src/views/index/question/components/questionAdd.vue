@@ -70,7 +70,6 @@
             :text.sync="item.text"
             :image.sync="item.image"
           /> -->
-
           <optionItem
             v-for="(item, index) in form.select_options"
             :key="index"
@@ -87,10 +86,14 @@
         :label-width="formLabelWidth"
       >
         <el-checkbox-group v-model="form.multiple_select_answer">
-          <el-checkbox label="A"></el-checkbox>
-          <el-checkbox label="B"></el-checkbox>
-          <el-checkbox label="C"></el-checkbox>
-          <el-checkbox label="D"></el-checkbox>
+          <optionItem
+            v-for="(item, index) in form.select_options"
+            :key="index"
+            :isRadio="false"
+            :label="item.label"
+            v-model="item.text"
+            :image.sync="item.image"
+          />
         </el-checkbox-group>
       </el-form-item>
 

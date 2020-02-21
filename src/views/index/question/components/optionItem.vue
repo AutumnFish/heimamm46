@@ -1,6 +1,9 @@
 <template>
   <div class="option-container">
-    <el-radio :label="label"></el-radio>
+    <!-- 单选选项 -->
+    <el-radio v-if="isRadio" :label="label"></el-radio>
+    <!-- 多选的选项 -->
+    <el-checkbox v-else :label="label"></el-checkbox>
     <!-- 输入框 -->
     <el-input v-model="selfValue" placeholder=""></el-input>
     <!-- 上传组件 -->
@@ -16,7 +19,6 @@
     </el-upload>
   </div>
 </template>
-
 <script>
 export default {
   // 定义的属性 让外部传递
@@ -25,7 +27,12 @@ export default {
     // text: String,
     image: String,
     // 如果要v-model那么属性名必须有
-    value: String
+    value: String,
+    // 是否为单选
+    isRadio: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
@@ -45,7 +52,7 @@ export default {
     }
   },
   methods: {
-    // 绑定原生事件可以接收到事件参数 v就是 输入的值
+    //  .sync 用法 绑定原生事件可以接收到事件参数 v就是 输入的值
     // input(v) {
     //   // 直接通知父组件
     //   this.$emit('update:text', v);
