@@ -119,6 +119,12 @@
         <!-- <myEditor v-bind:value="form.answer_analyze" @input="v => (form.title = v)" /> -->
         <myEditor v-model="form.answer_analyze" />
       </el-form-item>
+      <!-- 分割线 -->
+      <el-divider></el-divider>
+      <el-form-item label="试题备注" :label-width="formLabelWidth">
+        <el-input v-model="form.remark" type="textarea" rows="2"  placeholder=""></el-input>
+      </el-form-item>
+
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -192,7 +198,9 @@ export default {
           }
         ],
         // 解析视频
-        video: ''
+        video: '',
+        // 备注
+        remark: ''
       },
       formLabelWidth: '120px'
     };
