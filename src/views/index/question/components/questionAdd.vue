@@ -7,7 +7,7 @@
   >
     <el-form :model="form">
       <el-form-item label="学科" :label-width="formLabelWidth">
-        <subjectSel v-model="form.subject" />
+        <subjectSel :isQuery="false" v-model="form.subject" />
       </el-form-item>
       <el-form-item label="阶段" :label-width="formLabelWidth">
         <el-select v-model="form.step" placeholder="请选择阶段">
@@ -17,7 +17,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="企业" :label-width="formLabelWidth">
-        <enterpriseSel v-model="form.enterprise" />
+        <enterpriseSel :isQuery="false" v-model="form.enterprise" />
       </el-form-item>
       <el-form-item label="城市" :label-width="formLabelWidth">
         <!-- <chinaArea v-bind:value="form.city" @input="v => (form.city = v)" /> -->
