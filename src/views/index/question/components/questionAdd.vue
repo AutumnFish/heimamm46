@@ -62,11 +62,20 @@
           <el-radio label="C"></el-radio>
           <el-radio label="D"></el-radio> -->
 
-          <optionItem
+          <!-- 使用.sync进行绑定 -->
+          <!-- <optionItem
             v-for="(item, index) in form.select_options"
             :key="index"
             :label="item.label"
             :text.sync="item.text"
+            :image.sync="item.image"
+          /> -->
+
+          <optionItem
+            v-for="(item, index) in form.select_options"
+            :key="index"
+            :label="item.label"
+            v-model="item.text"
             :image.sync="item.image"
           />
         </el-radio-group>

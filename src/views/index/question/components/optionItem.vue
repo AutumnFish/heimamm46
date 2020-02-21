@@ -2,7 +2,7 @@
   <div class="option-container">
     <el-radio :label="label"></el-radio>
     <!-- 输入框 -->
-    <el-input :value="text" @input="input" placeholder=""></el-input>
+    <el-input v-model="selfValue" placeholder=""></el-input>
     <!-- 上传组件 -->
     <el-upload
       class="avatar-uploader"
@@ -19,27 +19,37 @@
 
 <script>
 export default {
-    // 定义的属性 让外部传递
-    props:{
-        label:String,
-        text:String,
-        image:String
-    },
+  // 定义的属性 让外部传递
+  props: {
+    label: String,
+    // text: String,
+    image: String,
+    // 如果要v-model那么属性名必须有
+    value: String
+  },
   data() {
     return {
       // 图片的本地预览地址
       imageUrl: '',
       // 上传的地址
-      uploadURL: process.env.VUE_APP_URL + '/question/upload'
+      uploadURL: process.env.VUE_APP_URL + '/question/upload',
+      // 自己的双向绑定的数据
+      selfValue: this.value
     };
   },
+  // 侦听器
+  watch: {
+    selfValue() {
+      // 通知父组件
+      this.$emit('input', this.selfValue);
+    }
+  },
   methods: {
-    // 绑定原生事件可以接收到事件参数
-    input(v) {
-        // window.console.log(v)
-        // 直接通知父组件
-        this.$emit("update:text",v)
-    },
+    // 绑定原生事件可以接收到事件参数 v就是 输入的值
+    // input(v) {
+    //   // 直接通知父组件
+    //   this.$emit('update:text', v);
+    // },
     // 上传成功之后 通知 父组件
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
