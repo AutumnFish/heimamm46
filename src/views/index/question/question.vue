@@ -102,7 +102,9 @@
         <el-table-column prop="username" label="创建者"> </el-table-column>
         <el-table-column label="状态">
           <template slot-scope="scope">
-            {{ scope.row.status === 1 ? '启用' : '禁用' }}
+            <span v-if="scope.row.status===1">启用</span>
+            <span style="color:red" v-else>禁用</span>
+            <!-- {{ scope.row.status === 1 ? '启用' : '禁用' }} -->
           </template>
         </el-table-column>
         <el-table-column prop="reads" label="访问量"> </el-table-column>
@@ -111,7 +113,7 @@
             <el-button @click="enterEdit(scope.row)" type="text"
               >编辑</el-button
             >
-            <el-button type="text">
+            <el-button type="text" @click="changeStatus(scope.row)">
               {{ scope.row.status === 1 ? '禁用' : '启用' }}
             </el-button>
             <el-button type="text">删除</el-button>
@@ -140,7 +142,7 @@
 
 <script>
 // 导入题库列表 接口
-import { questionList } from '@/api/question.js';
+import { questionList,questionStatus } from '@/api/question.js';
 // 导入 学科下拉框
 // import subjectSel from './components/subjectSel.vue';
 // 导入 企业下拉框组件
@@ -193,6 +195,18 @@ export default {
     questionEdit
   },
   methods: {
+    // 切换状态
+    changeStatus(row){
+      questionStatus({
+        id:row.id
+      }).then(res=>{
+        if(res.code===200){
+          this.$message.success('状态修改成功')
+          // 重新获取数据
+          this.getData()
+        }
+      })
+    },
     // 搜索数据
     searchQuestion() {
       // 搜索之后去第一页
@@ -210,10 +224,10 @@ export default {
       rowData.multiple_select_answer = rowData.multiple_select_answer.split(
         ','
       );
-      // 设置数据
-      this.$refs.questionEdit.form = rowData;
       // 弹出对话框
       this.$refs.questionEdit.dialogFormVisible = true;
+      // 设置数据
+      this.$refs.questionEdit.form = rowData;
     },
     // 页容量改变
     sizeChange(val) {
