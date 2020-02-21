@@ -3,10 +3,10 @@
     <el-card class="top-card">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="学科">
-          <subjectSel 
-          v-bind:value="formInline.subject" 
-          @input="v => (formInline.subject = v)"
-           />
+          <subjectSel
+            v-bind:value="formInline.subject"
+            @input="v => (formInline.subject = v)"
+          />
           <!-- <subjectSel v-model="formInline.subject" /> -->
         </el-form-item>
         <el-form-item label="阶段">
@@ -42,7 +42,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="日期">
-          <el-date-picker v-model="formInline.value1" type="date" placeholder="选择日期"> </el-date-picker>
+          <el-date-picker
+            v-model="formInline.value1"
+            type="date"
+            placeholder="选择日期"
+          >
+          </el-date-picker>
         </el-form-item>
         <br />
         <el-form-item class="title-item" label="标题">
@@ -51,7 +56,12 @@
         <el-form-item>
           <el-button type="primary">搜索</el-button>
           <el-button>清除</el-button>
-          <el-button type="primary" @click="$refs.questionAdd.dialogFormVisible = true" icon="el-icon-plus">新增试题</el-button>
+          <el-button
+            type="primary"
+            @click="$refs.questionAdd.dialogFormVisible = true"
+            icon="el-icon-plus"
+            >新增试题</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>
@@ -163,18 +173,23 @@ export default {
     // 页面改变
     currentChange(val) {
       window.console.log(`当前页: ${val}`);
+    },
+    // 抽取的获取数据逻辑
+    getData() {
+      // 获取题库数据
+      questionList().then(res => {
+        // window.console.log(res)
+        // 赋值给table
+        this.tableData = res.data.items;
+        // 总条数
+        this.total = res.data.pagination.total;
+      });
     }
   },
   // 获取数据
   created() {
-    // 获取题库数据
-    questionList().then(res => {
-      // window.console.log(res)
-      // 赋值给table
-      this.tableData = res.data.items;
-      // 总条数
-      this.total = res.data.pagination.total;
-    });
+    // 默认获取数据
+    this.getData()
   }
 };
 </script>

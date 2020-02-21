@@ -4,6 +4,7 @@
     fullscreen
     title="新增题库"
     :visible.sync="dialogFormVisible"
+    :destroy-on-close='true'
   >
     <el-form :model="form" ref="addForm" :rules="rules">
       <el-form-item label="学科" prop="subject" :label-width="formLabelWidth">
@@ -154,7 +155,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button @click="cancel">取 消</el-button>
       <el-button type="primary" @click="submitForm('addForm')">确 定</el-button>
     </div>
   </el-dialog>
@@ -169,6 +170,8 @@ import myEditor from './myEditor.vue';
 import optionItem from './optionItem.vue';
 // 导入上传视频组件
 import uploadVideo from './uploadVideo.vue';
+// 导入接口
+import { questionAdd } from '@/api/question.js';
 export default {
   // 注册组件
   components: {
@@ -270,7 +273,9 @@ export default {
           { required: true, message: '试题备注不能为空', trigger: 'change' }
         ]
       },
-      formLabelWidth: '130px'
+      formLabelWidth: '130px',
+      // 是否销毁元素
+      isDestroy:false
     };
   },
   methods: {
@@ -278,13 +283,32 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$message.success('校验通过')
+          // 接口调用
+          questionAdd(this.form).then(res => {
+            // window.console.log(res)
+            if (res.code === 200) {
+              this.$message.success('数据提交成功');
+              // 清除数据
+              this.isDestroy=true;
+              //关闭对话框
+              this.dialogFormVisible = false;
+              // 重新获取数据
+              this.$parent.getData();
+            }
+          });
         } else {
-          this.$message.warning("数据校验失败，请检查！！")
+          this.$message.warning('数据校验失败，请检查！！');
           return false;
         }
       });
-    }
+    },
+    // 关闭对话框
+    cancel(){
+      // 不销毁
+      this.isDestroy=false
+      // 关闭
+      this.dialogFormVisible=false
+    },
   }
 };
 </script>
