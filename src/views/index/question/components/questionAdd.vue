@@ -51,7 +51,18 @@
         :label-width="formLabelWidth"
       >
         <el-radio-group v-model="form.single_select_answer">
-          <el-radio label="A"></el-radio>
+          <!-- <optionItem
+            v-bind:label="form.select_options[0].label"
+            v-bind:text="form.select_options[0].text"
+            v-on:update:text="v => (form.select_options[0].text = v)"
+            v-bind:image="form.select_options[0].image"
+            v-on:update:image="v => (form.select_options[0].image = v)"
+          /> -->
+          <optionItem
+            :label="form.select_options[0].label"
+            :text.sync="form.select_options[0].text"
+            :image.sync="form.select_options[0].image"
+          />
           <el-radio label="B"></el-radio>
           <el-radio label="C"></el-radio>
           <el-radio label="D"></el-radio>
@@ -103,11 +114,14 @@
 import chinaArea from './chinaArea.vue';
 // 导入抽取的富文本编辑器
 import myEditor from './myEditor.vue';
+// 导入选项组件
+import optionItem from './optionItem.vue';
 export default {
   // 注册组件
   components: {
     chinaArea,
-    myEditor
+    myEditor,
+    optionItem
   },
   data() {
     return {
@@ -130,12 +144,36 @@ export default {
         // 答案 单选，多选，简答
         single_select_answer: '',
         multiple_select_answer: [],
-        short_answer: ''
+        short_answer: '',
+        // 选项
+        select_options: [
+          {
+            label: 'A',
+            text: '狗不理',
+            image: 'upload/20191129/fd5f03a07d95e3948860240564b180e4.jpeg'
+          },
+          {
+            label: 'B',
+            text: '猫不理',
+            image: 'upload/20191129/e93e7bb72accda7f3159cdabc4203991.jpeg'
+          },
+          {
+            label: 'C',
+            text: '麻花',
+            image: 'upload/20191129/b7caf98be9d0aa6764b0112ba0dfa19e.jpeg'
+          },
+          {
+            label: 'D',
+            text: '炸酱面',
+            image: 'upload/20191129/4067f19ab53a5e8388ad3459e23110f0.jpeg'
+          }
+        ]
       },
 
       formLabelWidth: '120px'
     };
-  }
+  },
+  methods: {}
 };
 </script>
 
