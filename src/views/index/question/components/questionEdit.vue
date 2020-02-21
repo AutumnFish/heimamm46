@@ -1,12 +1,12 @@
 <template>
   <el-dialog
-    class="question-add"
+    class="question-edit"
     fullscreen
-    title="新增题库"
+    title="编辑题库"
+    destroy-on-close
     :visible.sync="dialogFormVisible"
-    :destroy-on-close="isDestroy"
   >
-    <el-form :model="form" ref="addForm" :rules="rules">
+    <el-form :model="form" ref="editForm" :rules="rules">
       <el-form-item label="学科" prop="subject" :label-width="formLabelWidth">
         <subjectSel :isQuery="false" v-model="form.subject" />
       </el-form-item>
@@ -156,7 +156,9 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="cancel">取 消</el-button>
-      <el-button type="primary" @click="submitForm('addForm')">确 定</el-button>
+      <el-button type="primary" @click="submitForm('editForm')"
+        >确 定</el-button
+      >
     </div>
   </el-dialog>
 </template>
@@ -171,7 +173,7 @@ import optionItem from './optionItem.vue';
 // 导入上传视频组件
 import uploadVideo from './uploadVideo.vue';
 // 导入接口
-import { questionAdd } from '@/api/question.js';
+import { questionEdit } from '@/api/question.js';
 export default {
   // 注册组件
   components: {
@@ -273,25 +275,22 @@ export default {
           { required: true, message: '试题备注不能为空', trigger: 'change' }
         ]
       },
-      formLabelWidth: '130px',
-      // 是否销毁元素
-      isDestroy: false
+      formLabelWidth: '130px'
     };
   },
+
   methods: {
     // 数据提交
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           // 接口调用
-          questionAdd(this.form).then(res => {
+          questionEdit(this.form).then(res => {
             // window.console.log(res)
             if (res.code === 200) {
-              this.$message.success('数据提交成功');
+              this.$message.success('数据修改成功');
               // 重置表单
-              this.$refs.addForm.resetFields();
-              // 清除把内部的组件全部销毁  重新读取父组件的数据 并渲染
-              this.isDestroy = true;
+              this.$refs.editForm.resetFields();
               //关闭对话框
               this.dialogFormVisible = false;
               // 重新获取数据
@@ -306,8 +305,6 @@ export default {
     },
     // 关闭对话框
     cancel() {
-      // 不销毁
-      this.isDestroy = false;
       // 关闭
       this.dialogFormVisible = false;
     }
@@ -316,7 +313,7 @@ export default {
 </script>
 
 <style lang="less">
-.question-add {
+.question-edit {
   .el-form {
     width: 835px;
     margin: 0 auto;

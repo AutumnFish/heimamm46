@@ -99,7 +99,9 @@
         <el-table-column prop="reads" label="访问量"> </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text">编辑</el-button>
+            <el-button @click="enterEdit(scope.row)" type="text"
+              >编辑</el-button
+            >
             <el-button type="text">
               {{ scope.row.status === 1 ? '禁用' : '启用' }}
             </el-button>
@@ -122,6 +124,8 @@
     </el-card>
     <!-- 新增对话框 -->
     <questionAdd ref="questionAdd"></questionAdd>
+    <!-- 编辑对话框 -->
+    <questionEdit ref="questionEdit"></questionEdit>
   </div>
 </template>
 
@@ -134,6 +138,8 @@ import { questionList } from '@/api/question.js';
 // import enterpriseSel from './components/enterpriseSel.vue';
 // 导入 新增对话框
 import questionAdd from './components/questionAdd.vue';
+// 导入 编辑对话框
+import questionEdit from './components/questionEdit.vue';
 export default {
   name: 'question',
   data() {
@@ -163,9 +169,26 @@ export default {
   components: {
     // subjectSel,
     // enterpriseSel,
-    questionAdd
+    questionAdd,
+    questionEdit
   },
   methods: {
+    // 进入编辑
+    enterEdit(row) {
+      // window.console.log(row)
+
+      // 处理 被服务器保存为字符串的数据
+      let rowData = JSON.parse(JSON.stringify(row));
+      // 变为数组
+      rowData.city = rowData.city.split(',');
+      rowData.multiple_select_answer = rowData.multiple_select_answer.split(
+        ','
+      );
+      // 设置数据
+      this.$refs.questionEdit.form = rowData;
+      // 弹出对话框
+      this.$refs.questionEdit.dialogFormVisible = true;
+    },
     // 页容量改变
     sizeChange(val) {
       window.console.log(`每页 ${val} 条`);
@@ -189,7 +212,7 @@ export default {
   // 获取数据
   created() {
     // 默认获取数据
-    this.getData()
+    this.getData();
   }
 };
 </script>

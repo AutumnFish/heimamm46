@@ -37,7 +37,8 @@ export default {
   data() {
     return {
       // 图片的本地预览地址
-      imageUrl: '',
+      // 如果有在线地址，用在线地址，否则用本地的地址
+      imageUrl: this.image!=''?(process.env.VUE_APP_URL+'/'+this.image):this.image,
       // 上传的地址
       uploadURL: process.env.VUE_APP_URL + '/question/upload',
       // 自己的双向绑定的数据
