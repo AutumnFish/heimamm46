@@ -5,32 +5,40 @@
     title="新增题库"
     :visible.sync="dialogFormVisible"
   >
-    <el-form :model="form">
-      <el-form-item label="学科" :label-width="formLabelWidth">
+    <el-form :model="form" ref="addForm" :rules="rules">
+      <el-form-item label="学科" prop="subject" :label-width="formLabelWidth">
         <subjectSel :isQuery="false" v-model="form.subject" />
       </el-form-item>
-      <el-form-item label="阶段" :label-width="formLabelWidth">
+      <el-form-item label="阶段" prop="step" :label-width="formLabelWidth">
         <el-select v-model="form.step" placeholder="请选择阶段">
           <el-option label="初级" :value="1"></el-option>
           <el-option label="中级" :value="2"></el-option>
           <el-option label="高级" :value="3"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="企业" :label-width="formLabelWidth">
+      <el-form-item
+        label="企业"
+        prop="enterprise"
+        :label-width="formLabelWidth"
+      >
         <enterpriseSel :isQuery="false" v-model="form.enterprise" />
       </el-form-item>
-      <el-form-item label="城市" :label-width="formLabelWidth">
+      <el-form-item label="城市" prop="city" :label-width="formLabelWidth">
         <!-- <chinaArea v-bind:value="form.city" @input="v => (form.city = v)" /> -->
         <chinaArea v-model="form.city" />
       </el-form-item>
-      <el-form-item label="题型" :label-width="formLabelWidth">
+      <el-form-item label="题型" prop="type" :label-width="formLabelWidth">
         <el-radio-group v-model="form.type">
           <el-radio :label="1">单选</el-radio>
           <el-radio :label="2">多选</el-radio>
           <el-radio :label="3">简答</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="难度" :label-width="formLabelWidth">
+      <el-form-item
+        label="难度"
+        prop="difficulty"
+        :label-width="formLabelWidth"
+      >
         <el-radio-group v-model="form.difficulty">
           <el-radio :label="1">简单</el-radio>
           <el-radio :label="2">一般</el-radio>
@@ -40,7 +48,7 @@
       <!-- 分割线 -->
       <el-divider></el-divider>
       <!-- 富文本编辑器1 标题 -->
-      <el-form-item label="试题标题" :label-width="formLabelWidth">
+      <el-form-item label="试题标题" prop="title" :label-width="formLabelWidth">
         <!-- <myEditor v-bind:value="form.title" @input="v => (form.title = v)" /> -->
         <myEditor v-model="form.title" />
       </el-form-item>
@@ -49,6 +57,7 @@
         v-if="form.type == 1"
         label="单选"
         :label-width="formLabelWidth"
+        prop="single_select_answer"
       >
         <el-radio-group v-model="form.single_select_answer">
           <!-- <optionItem
@@ -84,6 +93,7 @@
         v-else-if="form.type == 2"
         label="多选"
         :label-width="formLabelWidth"
+        prop="multiple_select_answer"
       >
         <el-checkbox-group v-model="form.multiple_select_answer">
           <optionItem
@@ -98,7 +108,12 @@
       </el-form-item>
 
       <!-- 选项区域 简答 -->
-      <el-form-item v-else label="简答" :label-width="formLabelWidth">
+      <el-form-item
+        v-else
+        label="简答"
+        prop="short_answer"
+        :label-width="formLabelWidth"
+      >
         <el-input
           v-model="form.short_answer"
           type="textarea"
@@ -115,22 +130,32 @@
       <!-- 分割线 -->
       <el-divider></el-divider>
       <!-- 富文本编辑器1 标题 -->
-      <el-form-item label="答案解析" :label-width="formLabelWidth">
+      <el-form-item
+        label="答案解析"
+        prop="answer_analyze"
+        :label-width="formLabelWidth"
+      >
         <!-- <myEditor v-bind:value="form.answer_analyze" @input="v => (form.title = v)" /> -->
         <myEditor v-model="form.answer_analyze" />
       </el-form-item>
       <!-- 分割线 -->
       <el-divider></el-divider>
-      <el-form-item label="试题备注" :label-width="formLabelWidth">
-        <el-input v-model="form.remark" type="textarea" rows="2"  placeholder=""></el-input>
+      <el-form-item
+        label="试题备注"
+        prop="remark"
+        :label-width="formLabelWidth"
+      >
+        <el-input
+          v-model="form.remark"
+          type="textarea"
+          rows="2"
+          placeholder=""
+        ></el-input>
       </el-form-item>
-
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogFormVisible = false"
-        >确 定</el-button
-      >
+      <el-button type="primary" @click="submitForm('addForm')">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -202,10 +227,65 @@ export default {
         // 备注
         remark: ''
       },
-      formLabelWidth: '120px'
+      // 表单的校验
+      rules: {
+        // 学科 subject
+        subject: [
+          { required: true, message: '学科不能为空', trigger: 'change' }
+        ],
+        // 阶段 step
+        step: [{ required: true, message: '阶段不能为空', trigger: 'change' }],
+        // 企业 enterprise
+        enterprise: [
+          { required: true, message: '企业不能为空', trigger: 'change' }
+        ],
+        // 城市 city
+        city: [{ required: true, message: '城市不能为空', trigger: 'change' }],
+        // 题型 type
+        type: [{ required: true, message: '题型不能为空', trigger: 'change' }],
+        // 难度 difficulty
+        difficulty: [
+          { required: true, message: '难度不能为空', trigger: 'change' }
+        ],
+        // 标题 title
+        title: [{ required: true, message: '标题不能为空', trigger: 'change' }],
+        // 单选 single_select_answer
+        single_select_answer: [
+          { required: true, message: '单选不能为空', trigger: 'change' }
+        ],
+        // 多选 multiple_select_answer
+        multiple_select_answer: [
+          { required: true, message: '多选不能为空', trigger: 'change' }
+        ],
+        // 简答 short_answer
+        short_answer: [
+          { required: true, message: '简答不能为空', trigger: 'change' }
+        ],
+        // 答案解析 answer_analyze
+        answer_analyze: [
+          { required: true, message: '答案解析不能为空', trigger: 'change' }
+        ],
+        // 试题备注 remark
+        remark: [
+          { required: true, message: '试题备注不能为空', trigger: 'change' }
+        ]
+      },
+      formLabelWidth: '130px'
     };
   },
-  methods: {}
+  methods: {
+    // 数据提交
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$message.success('校验通过')
+        } else {
+          this.$message.warning("数据校验失败，请检查！！")
+          return false;
+        }
+      });
+    }
+  }
 };
 </script>
 
