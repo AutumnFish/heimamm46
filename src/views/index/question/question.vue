@@ -10,9 +10,10 @@
           <!-- <subjectSel v-model="formInline.subject" /> -->
         </el-form-item>
         <el-form-item label="阶段">
-          <el-select v-model="formInline.region" placeholder="请选择阶段">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+          <el-select v-model="formInline.step" placeholder="请选择阶段">
+            <el-option label="初级" value="1"></el-option>
+            <el-option label="中级" value="2"></el-option>
+            <el-option label="高级" value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="企业">
@@ -20,30 +21,35 @@
           <enterpriseSel v-model="formInline.enterprise" />
         </el-form-item>
         <el-form-item label="题型">
-          <el-select v-model="formInline.region" placeholder="请选择题型">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+          <el-select v-model="formInline.type" placeholder="请选择题型">
+            <el-option label="单选" value="1"></el-option>
+            <el-option label="多选" value="2"></el-option>
+            <el-option label="简答" value="3"></el-option>
           </el-select>
         </el-form-item>
         <br />
         <el-form-item label="难度">
-          <el-select v-model="formInline.region" placeholder="请选择难度">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+          <el-select v-model="formInline.difficulty" placeholder="请选择难度">
+            <el-option label="简单" value="1"></el-option>
+            <el-option label="一般" value="2"></el-option>
+            <el-option label="困难" value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="作者">
-          <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+          <el-input
+            v-model="formInline.username"
+            placeholder="审批人"
+          ></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="formInline.region" placeholder="请选择状态">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+          <el-select v-model="formInline.status" placeholder="请选择状态">
+            <el-option label="禁用" value="0"></el-option>
+            <el-option label="启用" value="1"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="日期">
           <el-date-picker
-            v-model="formInline.value1"
+            v-model="formInline.create_date"
             type="date"
             placeholder="选择日期"
           >
@@ -51,10 +57,13 @@
         </el-form-item>
         <br />
         <el-form-item class="title-item" label="标题">
-          <el-input v-model="formInline.user" placeholder="选择日期"></el-input>
+          <el-input
+            v-model="formInline.title"
+            placeholder="选择日期"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">搜索</el-button>
+          <el-button type="primary" @click="searchQuestion">搜索</el-button>
           <el-button>清除</el-button>
           <el-button
             type="primary"
@@ -145,9 +154,20 @@ export default {
   data() {
     return {
       formInline: {
-        user: '',
-        region: '',
-        value1: '',
+        // 作者
+        username: '',
+        // 标题
+        title: '',
+        // 类型
+        type: '',
+        // 阶段
+        step: '',
+        // 状态
+        status: '',
+        // 难度
+        difficulty: '',
+        // 创建日期
+        create_date: '',
         // 学科id
         subject: '',
         // 企业id
@@ -173,6 +193,12 @@ export default {
     questionEdit
   },
   methods: {
+    // 搜索数据
+    searchQuestion() {
+      // 搜索之后去第一页
+      this.index = 1;
+      this.getData();
+    },
     // 进入编辑
     enterEdit(row) {
       // window.console.log(row)
@@ -192,26 +218,28 @@ export default {
     // 页容量改变
     sizeChange(val) {
       // window.console.log(`每页 ${val} 条`);
-      this.size = val
+      this.size = val;
       // 去第一页
-      this.index = 1
-      this.getData()
+      this.index = 1;
+      this.getData();
     },
     // 页面改变
     currentChange(val) {
       // window.console.log(`当前页: ${val}`);
       // 保存页码
-      this.index = val
-      this.getData()
+      this.index = val;
+      this.getData();
     },
     // 抽取的获取数据逻辑
     getData() {
       // 获取题库数据
       questionList({
         // 页码
-        page:this.index,
+        page: this.index,
         // 页容量
-        limit:this.size
+        limit: this.size,
+        // 合并搜索的条件
+        ...this.formInline
       }).then(res => {
         // window.console.log(res)
         // 赋值给table
