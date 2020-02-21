@@ -191,16 +191,28 @@ export default {
     },
     // 页容量改变
     sizeChange(val) {
-      window.console.log(`每页 ${val} 条`);
+      // window.console.log(`每页 ${val} 条`);
+      this.size = val
+      // 去第一页
+      this.index = 1
+      this.getData()
     },
     // 页面改变
     currentChange(val) {
-      window.console.log(`当前页: ${val}`);
+      // window.console.log(`当前页: ${val}`);
+      // 保存页码
+      this.index = val
+      this.getData()
     },
     // 抽取的获取数据逻辑
     getData() {
       // 获取题库数据
-      questionList().then(res => {
+      questionList({
+        // 页码
+        page:this.index,
+        // 页容量
+        limit:this.size
+      }).then(res => {
         // window.console.log(res)
         // 赋值给table
         this.tableData = res.data.items;
