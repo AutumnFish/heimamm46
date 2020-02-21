@@ -44,6 +44,43 @@
         <!-- <myEditor v-bind:value="form.title" @input="v => (form.title = v)" /> -->
         <myEditor v-model="form.title" />
       </el-form-item>
+      <!-- 选项区域 单选 -->
+      <el-form-item
+        v-if="form.type == 1"
+        label="单选"
+        :label-width="formLabelWidth"
+      >
+        <el-radio-group v-model="form.single_select_answer">
+          <el-radio label="A"></el-radio>
+          <el-radio label="B"></el-radio>
+          <el-radio label="C"></el-radio>
+          <el-radio label="D"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <!-- 选项区域 多选 -->
+      <el-form-item
+        v-else-if="form.type == 2"
+        label="多选"
+        :label-width="formLabelWidth"
+      >
+        <el-checkbox-group v-model="form.multiple_select_answer">
+          <el-checkbox label="A"></el-checkbox>
+          <el-checkbox label="B"></el-checkbox>
+          <el-checkbox label="C"></el-checkbox>
+          <el-checkbox label="D"></el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
+
+      <!-- 选项区域 简答 -->
+      <el-form-item v-else label="简答" :label-width="formLabelWidth">
+        <el-input
+          v-model="form.short_answer"
+          type="textarea"
+          rows="4"
+          placeholder=""
+        ></el-input>
+      </el-form-item>
+
       <!-- 分割线 -->
       <el-divider></el-divider>
       <!-- 富文本编辑器1 标题 -->
@@ -89,7 +126,11 @@ export default {
         difficulty: 1,
         // 富文本编辑器的数据 标题 答案解析(answer_analyze)
         title: '我是一个标题',
-        answer_analyze: '默认的答案解析'
+        answer_analyze: '默认的答案解析',
+        // 答案 单选，多选，简答
+        single_select_answer: '',
+        multiple_select_answer: [],
+        short_answer: ''
       },
 
       formLabelWidth: '120px'
